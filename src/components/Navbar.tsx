@@ -1,6 +1,7 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,7 +38,10 @@ const Navbar = () => {
             <Button variant="outline" className="mr-3">
               Se connecter
             </Button>
-            <Button>Essai gratuit</Button>
+            <Button>
+              <Settings className="h-4 w-4 mr-2" />
+              Paramètres
+            </Button>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button onClick={toggleMenu} className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-laundry-500">
@@ -71,7 +75,8 @@ const Navbar = () => {
               Se connecter
             </Button>
             <Button className="w-full justify-center">
-              Essai gratuit
+              <Settings className="h-4 w-4 mr-2" />
+              Paramètres
             </Button>
           </div>
         </div>}

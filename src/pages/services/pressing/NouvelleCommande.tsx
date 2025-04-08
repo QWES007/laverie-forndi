@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -11,6 +12,25 @@ import { Shirt, Plus, Minus, ArrowRight, Trash2 } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
+
+// Liste des couleurs disponibles
+const couleurs = [
+  "Blanc", "Noir", "Gris", "Beige", "Marron", "Rouge", 
+  "Bleu", "Bleu marine", "Vert", "Jaune", "Orange", 
+  "Rose", "Violet", "Bordeaux", "Turquoise", "Kaki"
+];
+
+// Liste des motifs disponibles
+const motifs = [
+  "Uni", "Rayé", "À carreaux", "À pois", "Floral", 
+  "Géométrique", "Imprimé", "Brodé", "Jacquard", "Tweed"
+];
 
 // Types de vêtements et leurs prix
 const vetements = [
@@ -37,6 +57,9 @@ type Vetement = {
   prix: number;
   quantite: number;
   total: number;
+  couleur?: string;
+  motif?: string;
+  notes?: string;
 };
 
 type Client = {
@@ -94,7 +117,14 @@ const NouvelleCommande = () => {
         return item;
       }));
     } else {
-      setPanier([...panier, { ...vetement, quantite: 1, total: vetement.prix }]);
+      setPanier([...panier, { 
+        ...vetement, 
+        quantite: 1, 
+        total: vetement.prix,
+        couleur: "Blanc", // Couleur par défaut
+        motif: "Uni", // Motif par défaut
+        notes: ""
+      }]);
     }
   };
 
@@ -121,6 +151,33 @@ const NouvelleCommande = () => {
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDateRetrait(e.target.value);
+  };
+
+  const modifierCouleur = (id: number, couleur: string) => {
+    setPanier(panier.map(item => {
+      if (item.id === id) {
+        return { ...item, couleur };
+      }
+      return item;
+    }));
+  };
+
+  const modifierMotif = (id: number, motif: string) => {
+    setPanier(panier.map(item => {
+      if (item.id === id) {
+        return { ...item, motif };
+      }
+      return item;
+    }));
+  };
+
+  const modifierNotes = (id: number, notes: string) => {
+    setPanier(panier.map(item => {
+      if (item.id === id) {
+        return { ...item, notes };
+      }
+      return item;
+    }));
   };
 
   const onSubmit = (data: Client) => {
@@ -227,7 +284,7 @@ const NouvelleCommande = () => {
                     >
                       <Shirt className="mb-1 h-5 w-5 text-laundry-600" />
                       <span className="text-sm">{vetement.type}</span>
-                      <span className="text-xs text-gray-500 mt-1">{vetement.prix.toFixed(2)} €</span>
+                      <span className="text-xs text-gray-500 mt-1">{vetement.prix.toFixed(2)} FCFA</span>
                     </Button>
                   ))}
                 </div>
@@ -250,13 +307,14 @@ const NouvelleCommande = () => {
                       <TableHead className="text-center">Prix</TableHead>
                       <TableHead className="text-center">Qté</TableHead>
                       <TableHead className="text-right">Total</TableHead>
+                      <TableHead>Détails</TableHead>
                       <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {panier.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={5} className="text-center text-gray-500 py-8">
+                        <TableCell colSpan={6} className="text-center text-gray-500 py-8">
                           Aucun article ajouté
                         </TableCell>
                       </TableRow>
@@ -264,7 +322,7 @@ const NouvelleCommande = () => {
                       panier.map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>{item.type}</TableCell>
-                          <TableCell className="text-center">{item.prix.toFixed(2)} €</TableCell>
+                          <TableCell className="text-center">{item.prix.toFixed(2)} FCFA</TableCell>
                           <TableCell>
                             <div className="flex items-center justify-center gap-2">
                               <Button
@@ -287,7 +345,59 @@ const NouvelleCommande = () => {
                             </div>
                           </TableCell>
                           <TableCell className="text-right font-medium">
-                            {item.total.toFixed(2)} €
+                            {item.total.toFixed(2)} FCFA
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex flex-col gap-1 text-xs">
+                              <div className="flex items-center gap-1">
+                                <span className="font-medium">Couleur:</span>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
+                                      {item.couleur}
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end" className="w-48">
+                                    {couleurs.map((couleur) => (
+                                      <DropdownMenuItem 
+                                        key={couleur} 
+                                        onClick={() => modifierCouleur(item.id, couleur)}
+                                      >
+                                        {couleur}
+                                      </DropdownMenuItem>
+                                    ))}
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-medium">Motif:</span>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
+                                      {item.motif}
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end" className="w-48">
+                                    {motifs.map((motif) => (
+                                      <DropdownMenuItem 
+                                        key={motif} 
+                                        onClick={() => modifierMotif(item.id, motif)}
+                                      >
+                                        {motif}
+                                      </DropdownMenuItem>
+                                    ))}
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                              <div className="mt-1">
+                                <Input 
+                                  placeholder="Notes supplémentaires" 
+                                  value={item.notes} 
+                                  onChange={(e) => modifierNotes(item.id, e.target.value)}
+                                  className="h-6 text-xs"
+                                />
+                              </div>
+                            </div>
                           </TableCell>
                           <TableCell>
                             <Button
@@ -308,7 +418,7 @@ const NouvelleCommande = () => {
                 <div className="mt-6 border-t pt-4">
                   <div className="flex justify-between items-center text-lg font-bold">
                     <span>Total</span>
-                    <span className="text-laundry-700">{total.toFixed(2)} €</span>
+                    <span className="text-laundry-700">{total.toFixed(2)} FCFA</span>
                   </div>
                 </div>
               </CardContent>
@@ -329,3 +439,4 @@ const NouvelleCommande = () => {
 };
 
 export default NouvelleCommande;
+
