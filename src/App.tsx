@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import PressingService from "./pages/services/pressing";
 import NouvelleCommande from "./pages/services/pressing/NouvelleCommande";
+import ListeCommandes from "./pages/services/pressing/ListeCommandes";
 import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/settings" element={<Settings />} />
           <Route path="/services/pressing" element={<PressingService />} />
           <Route path="/services/pressing/nouvelle-commande" element={<NouvelleCommande />} />
+          <Route path="/services/pressing/commandes" element={<ListeCommandes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
