@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
 import FeatureCard from "@/components/FeatureCard";
 import { Link } from "react-router-dom";
+
 const Index = () => {
   return <Layout>
       {/* Hero Section */}
