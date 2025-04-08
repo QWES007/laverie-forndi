@@ -81,7 +81,7 @@ const NouvelleCommande = () => {
       setPanier(panier.map(item => {
         if (item.id === id) {
           const newQuantite = item.quantite + 1;
-          return { ...item, quantite: newQuantite, total: vetement.prix * newQuantite };
+          return { ...item, quantite: newQuantite, total: item.prix * newQuantite };
         }
         return item;
       }));
@@ -89,9 +89,9 @@ const NouvelleCommande = () => {
       setPanier([...panier, { 
         id: vetement.id, 
         type: vetement.name,
-        prix: vetement.price,
+        prix: vetement.price, // Changed from "prix" to "price" to match the property in ClothingItem
         quantite: 1, 
-        total: vetement.price,
+        total: vetement.price, // Changed from "prix" to "price" to match the property in ClothingItem
         couleur: vetement.colors[0] || "Blanc", // Première couleur disponible ou Blanc par défaut
         motif: vetement.patterns[0] || "Uni", // Premier motif disponible ou Uni par défaut
         notes: ""
