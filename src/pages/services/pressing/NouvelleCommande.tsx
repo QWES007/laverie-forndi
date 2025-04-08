@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -11,7 +10,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Shirt, Plus, Minus, ArrowRight, Trash2 } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 
 // Types de vêtements et leurs prix
 const vetements = [
@@ -126,7 +125,11 @@ const NouvelleCommande = () => {
 
   const onSubmit = (data: Client) => {
     if (panier.length === 0) {
-      toast.error("Veuillez ajouter au moins un vêtement");
+      toast({
+        title: "Erreur",
+        description: "Veuillez ajouter au moins un vêtement",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -140,7 +143,10 @@ const NouvelleCommande = () => {
     };
 
     console.log("Commande enregistrée:", commande);
-    toast.success("Commande enregistrée avec succès!");
+    toast({
+      title: "Succès",
+      description: "Commande enregistrée avec succès!",
+    });
 
     // Redirection vers la page de confirmation (à créer)
     setTimeout(() => {
