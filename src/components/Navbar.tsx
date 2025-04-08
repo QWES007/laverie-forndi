@@ -3,11 +3,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  
   return <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
@@ -38,9 +41,11 @@ const Navbar = () => {
             <Button variant="outline" className="mr-3">
               Se connecter
             </Button>
-            <Button>
-              <Settings className="h-4 w-4 mr-2" />
-              Paramètres
+            <Button asChild>
+              <Link to="/settings">
+                <Settings className="h-4 w-4 mr-2" />
+                Paramètres
+              </Link>
             </Button>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
@@ -74,12 +79,15 @@ const Navbar = () => {
             <Button variant="outline" className="w-full justify-center">
               Se connecter
             </Button>
-            <Button className="w-full justify-center">
-              <Settings className="h-4 w-4 mr-2" />
-              Paramètres
+            <Button className="w-full justify-center" asChild>
+              <Link to="/settings">
+                <Settings className="h-4 w-4 mr-2" />
+                Paramètres
+              </Link>
             </Button>
           </div>
         </div>}
     </nav>;
 };
+
 export default Navbar;
