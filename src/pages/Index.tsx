@@ -1,29 +1,26 @@
-
 import { ArrowRight, BarChart, Calendar, Database, Settings, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
 import FeatureCard from "@/components/FeatureCard";
 import { Link } from "react-router-dom";
-
 const Index = () => {
-  return (
-    <Layout>
+  return <Layout>
       {/* Hero Section */}
       <section className="gradient-bg text-white py-20">
         <div className="container mx-auto text-center px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             La solution moderne pour votre blanchisserie
           </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto animate-fade-in" style={{
+          animationDelay: "0.2s"
+        }}>
             Gérez efficacement votre pressing avec notre plateforme intuitive, accessible sur tous les appareils
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <Button size="lg" className="bg-white text-laundry-600 hover:bg-laundry-50">
-              Démarrer l'essai gratuit
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              En savoir plus <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in" style={{
+          animationDelay: "0.4s"
+        }}>
+            
+            
           </div>
         </div>
       </section>
@@ -33,31 +30,11 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <h2 className="section-title text-center">Fonctionnalités principales</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            <FeatureCard 
-              icon={Database}
-              title="Gestion multi-sites" 
-              description="Suivez en temps réel les activités de tous vos établissements depuis une interface unique."
-            />
-            <FeatureCard 
-              icon={Users}
-              title="Gestion des utilisateurs" 
-              description="Créez des comptes avec différents niveaux d'accès pour vos administrateurs et employés."
-            />
-            <FeatureCard 
-              icon={Calendar}
-              title="Planification intelligente" 
-              description="Organisez efficacement le travail et optimisez la gestion de vos ressources."
-            />
-            <FeatureCard 
-              icon={BarChart}
-              title="Facturation automatique" 
-              description="Générez et envoyez automatiquement les factures à vos clients avec suivi des paiements."
-            />
-            <FeatureCard 
-              icon={Settings}
-              title="Automatisation des processus" 
-              description="Automatisez les tâches répétitives pour gagner du temps et réduire les erreurs."
-            />
+            <FeatureCard icon={Database} title="Gestion multi-sites" description="Suivez en temps réel les activités de tous vos établissements depuis une interface unique." />
+            <FeatureCard icon={Users} title="Gestion des utilisateurs" description="Créez des comptes avec différents niveaux d'accès pour vos administrateurs et employés." />
+            <FeatureCard icon={Calendar} title="Planification intelligente" description="Organisez efficacement le travail et optimisez la gestion de vos ressources." />
+            <FeatureCard icon={BarChart} title="Facturation automatique" description="Générez et envoyez automatiquement les factures à vos clients avec suivi des paiements." />
+            <FeatureCard icon={Settings} title="Automatisation des processus" description="Automatisez les tâches répétitives pour gagner du temps et réduire les erreurs." />
             <div className="feature-card flex flex-col justify-between">
               <p className="text-gray-600 mb-4">Découvrez toutes nos fonctionnalités conçues pour simplifier la gestion de votre pressing.</p>
               <Link to="/features">
@@ -147,8 +124,6 @@ const Index = () => {
           </Button>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Index;
