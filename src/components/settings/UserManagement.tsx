@@ -12,11 +12,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 
+// Define user interface to fix type issues
+interface User {
+  id: string;
+  name: string;
+  phone: string;
+  role: "admin" | "receptionniste" | "gerant";
+}
+
 // Define form schema with zod
 const userFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Veuillez entrer une adresse email valide"),
+  phone: z.string().length(10, "Le numéro de téléphone doit contenir 10 chiffres").regex(/^\d+$/, "Le numéro doit contenir uniquement des chiffres"),
   password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
   role: z.enum(["admin", "receptionniste", "gerant"], {
     required_error: "Veuillez sélectionner un rôle",
@@ -26,22 +34,22 @@ const userFormSchema = z.object({
 type UserForm = z.infer<typeof userFormSchema>;
 
 // Sample initial users
-const initialUsers = [
-  { id: "1", name: "Admin Système", email: "admin@laverie.com", role: "admin" },
-  { id: "2", name: "Jean Réceptionniste", email: "jean@laverie.com", role: "receptionniste" },
-  { id: "3", name: "Marie Gérante", email: "marie@laverie.com", role: "gerant" },
+const initialUsers: User[] = [
+  { id: "1", name: "Admin Système", phone: "0600000000", role: "admin" },
+  { id: "2", name: "Jean Réceptionniste", phone: "0611111111", role: "receptionniste" },
+  { id: "3", name: "Marie Gérante", phone: "0622222222", role: "gerant" },
 ];
 
 const UserManagement = () => {
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState<User[]>(initialUsers);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<UserForm | null>(null);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
 
   const form = useForm<UserForm>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
       name: "",
-      email: "",
+      phone: "",
       password: "",
       role: "receptionniste",
     },
@@ -50,11 +58,14 @@ const UserManagement = () => {
   const onSubmit = (data: UserForm) => {
     if (editingUser?.id) {
       // Update existing user
-      setUsers(users.map(user => (user.id === editingUser.id ? { ...data, id: user.id } : user)));
+      setUsers(users.map(user => (user.id === editingUser.id ? { ...data, id: user.id } as User : user)));
       toast.success("Utilisateur mis à jour avec succès");
     } else {
       // Add new user
-      const newUser = { ...data, id: Math.random().toString(36).substring(2, 9) };
+      const newUser: User = { 
+        ...data, 
+        id: Math.random().toString(36).substring(2, 9) 
+      };
       setUsers([...users, newUser]);
       toast.success("Nouvel utilisateur ajouté avec succès");
     }
@@ -65,7 +76,7 @@ const UserManagement = () => {
   const openAddUserForm = () => {
     form.reset({
       name: "",
-      email: "",
+      phone: "",
       password: "",
       role: "receptionniste",
     });
@@ -73,13 +84,13 @@ const UserManagement = () => {
     setIsSheetOpen(true);
   };
 
-  const openEditUserForm = (user: UserForm) => {
+  const openEditUserForm = (user: User) => {
     form.reset({
       id: user.id,
       name: user.name,
-      email: user.email,
+      phone: user.phone,
       password: "", // Don't show the password when editing
-      role: user.role as "admin" | "receptionniste" | "gerant",
+      role: user.role,
     });
     setEditingUser(user);
     setIsSheetOpen(true);
@@ -112,7 +123,7 @@ const UserManagement = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Nom</TableHead>
-            <TableHead>Email</TableHead>
+            <TableHead>Téléphone</TableHead>
             <TableHead>Rôle</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -121,8 +132,8 @@ const UserManagement = () => {
           {users.map((user) => (
             <TableRow key={user.id}>
               <TableCell className="font-medium">{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{roleNames[user.role as keyof typeof roleNames]}</TableCell>
+              <TableCell>{user.phone}</TableCell>
+              <TableCell>{roleNames[user.role]}</TableCell>
               <TableCell className="text-right">
                 <Button
                   variant="ghost"
@@ -166,12 +177,12 @@ const UserManagement = () => {
               />
               <FormField
                 control={form.control}
-                name="email"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Téléphone</FormLabel>
                     <FormControl>
-                      <Input placeholder="email@example.com" {...field} />
+                      <Input placeholder="0600000000" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
