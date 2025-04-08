@@ -23,6 +23,15 @@ const clothingFormSchema = z.object({
 
 type ClothingForm = z.infer<typeof clothingFormSchema>;
 
+// Type definition for clothing item
+interface ClothingItem {
+  id: string;
+  name: string;
+  price: number;
+  colors: string[];
+  patterns: string[];
+}
+
 // Available colors and patterns
 const availableColors = [
   "Blanc", "Noir", "Bleu", "Rouge", "Vert", "Jaune", "Orange", "Violet", "Rose", "Gris", "Beige", "Marron"
@@ -33,16 +42,16 @@ const availablePatterns = [
 ];
 
 // Sample initial clothing items
-const initialClothingItems = [
+const initialClothingItems: ClothingItem[] = [
   { id: "1", name: "Chemise", price: 1500, colors: ["Blanc", "Bleu", "Rose"], patterns: ["Uni", "Rayé"] },
   { id: "2", name: "Pantalon", price: 2000, colors: ["Noir", "Bleu", "Gris", "Beige"], patterns: ["Uni"] },
   { id: "3", name: "Robe", price: 3000, colors: ["Noir", "Rouge", "Bleu"], patterns: ["Uni", "Floral"] },
 ];
 
 const ClothingManagement = () => {
-  const [clothingItems, setClothingItems] = useState(initialClothingItems);
+  const [clothingItems, setClothingItems] = useState<ClothingItem[]>(initialClothingItems);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any | null>(null);
+  const [editingItem, setEditingItem] = useState<ClothingItem | null>(null);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedPatterns, setSelectedPatterns] = useState<string[]>([]);
 
@@ -55,8 +64,10 @@ const ClothingManagement = () => {
   });
 
   const onSubmit = (data: ClothingForm) => {
-    const formattedItem = {
+    const formattedItem: ClothingItem = {
       ...data,
+      name: data.name, // Ensure name is not undefined
+      price: data.price || 0, // Ensure price is not undefined
       colors: selectedColors,
       patterns: selectedPatterns,
       id: editingItem?.id || Math.random().toString(36).substring(2, 9)
@@ -90,7 +101,7 @@ const ClothingManagement = () => {
     setIsSheetOpen(true);
   };
 
-  const openEditClothingForm = (item: any) => {
+  const openEditClothingForm = (item: ClothingItem) => {
     form.reset({
       id: item.id,
       name: item.name,
@@ -265,7 +276,7 @@ const ClothingManagement = () => {
                 </div>
               </div>
 
-              <SheetFooter>
+              <SheetFooter className="flex justify-between pt-4">
                 <SheetClose asChild>
                   <Button type="button" variant="outline">Annuler</Button>
                 </SheetClose>
