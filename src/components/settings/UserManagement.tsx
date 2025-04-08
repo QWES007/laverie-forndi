@@ -57,14 +57,22 @@ const UserManagement = () => {
 
   const onSubmit = (data: UserForm) => {
     if (editingUser?.id) {
-      // Update existing user
-      setUsers(users.map(user => (user.id === editingUser.id ? { ...data, id: user.id } as User : user)));
+      // Update existing user - ensure all required properties are present
+      const updatedUser: User = {
+        id: editingUser.id,
+        name: data.name,
+        phone: data.phone,
+        role: data.role
+      };
+      setUsers(users.map(user => (user.id === editingUser.id ? updatedUser : user)));
       toast.success("Utilisateur mis à jour avec succès");
     } else {
-      // Add new user
-      const newUser: User = { 
-        ...data, 
-        id: Math.random().toString(36).substring(2, 9) 
+      // Add new user - ensure all required properties are present
+      const newUser: User = {
+        id: Math.random().toString(36).substring(2, 9),
+        name: data.name,
+        phone: data.phone,
+        role: data.role
       };
       setUsers([...users, newUser]);
       toast.success("Nouvel utilisateur ajouté avec succès");
