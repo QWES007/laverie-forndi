@@ -50,7 +50,7 @@ const Index = () => {
               <div className="bg-laundry-100 p-6 rounded-full mb-6">
                 <Shirt className="h-16 w-16 text-laundry-600" />
               </div>
-              <h3 className="text-2xl font-bold text-laundry-600 mb-4">Service Pressing</h3>
+              <h3 className="text-2xl font-bold text-laundry-600 mb-4">Pressing</h3>
               <p className="text-gray-600 mb-6">Service professionnel de nettoyage à sec et de repassage pour tous vos vêtements délicats, avec un soin particulier pour chaque type de tissu.</p>
               <Link to="/services/pressing">
                 <Button className="mt-4">
