@@ -33,7 +33,7 @@ const Index = () => {
             <FeatureCard icon={Database} title="Gestion multi-sites" description="Suivez en temps réel les activités de tous vos établissements depuis une interface unique." />
             <FeatureCard icon={Users} title="Gestion des utilisateurs" description="Créez des comptes avec différents niveaux d'accès pour vos administrateurs et employés." />
             <FeatureCard icon={Calendar} title="Planification intelligente" description="Organisez efficacement le travail et optimisez la gestion de vos ressources." />
-            <FeatureCard icon={BarChart} title="Facturation automatique" description="Générez et envoyez automatiquement les factures à vos clients avec suivi des paiements." />
+            
             <FeatureCard icon={Settings} title="Automatisation des processus" description="Automatisez les tâches répétitives pour gagner du temps et réduire les erreurs." />
             <div className="feature-card flex flex-col justify-between">
               <p className="text-gray-600 mb-4">Découvrez toutes nos fonctionnalités conçues pour simplifier la gestion de votre pressing.</p>
