@@ -184,19 +184,19 @@ const ListeCommandes = () => {
           </TabsList>
           
           <TabsContent value="tous" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
           </TabsContent>
           
           <TabsContent value="en_cours" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
           </TabsContent>
           
           <TabsContent value="pret" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
           </TabsContent>
           
           <TabsContent value="livre" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
           </TabsContent>
         </Tabs>
       </div>
@@ -204,7 +204,8 @@ const ListeCommandes = () => {
   );
 };
 
-const OrdersContent = ({ groupedCommandes }) => {
+// Updated to accept navigate as a prop
+const OrdersContent = ({ groupedCommandes, navigate }) => {
   return groupedCommandes.length > 0 ? (
     <div className="space-y-8">
       {groupedCommandes.map((group, index) => (
