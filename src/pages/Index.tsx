@@ -1,5 +1,5 @@
 
-import { ArrowRight, BarChart, Calendar, Database, Settings, Users } from "lucide-react";
+import { ArrowRight, BarChart, Calendar, Database, Settings, Users, Shirt, WashingMachine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
 import FeatureCard from "@/components/FeatureCard";
@@ -30,17 +30,31 @@ const Index = () => {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="section-title text-center">NOS SERVICES</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            <FeatureCard icon={Database} title="Gestion multi-sites" description="Suivez en temps réel les activités de tous vos établissements depuis une interface unique." />
-            <FeatureCard icon={Users} title="Gestion des utilisateurs" description="Créez des comptes avec différents niveaux d'accès pour vos administrateurs et employés." />
-            <FeatureCard icon={Calendar} title="Planification intelligente" description="Organisez efficacement le travail et optimisez la gestion de vos ressources." />
+          <div className="grid md:grid-cols-2 gap-8 mt-12">
+            {/* Service Laverie */}
+            <div className="feature-card p-8 flex flex-col items-center text-center">
+              <div className="bg-laundry-100 p-6 rounded-full mb-6">
+                <WashingMachine className="h-16 w-16 text-laundry-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-laundry-600 mb-4">Service Laverie</h3>
+              <p className="text-gray-600 mb-6">Solutions complètes pour vos besoins de lavage, avec des équipements modernes et des processus optimisés pour assurer une qualité exceptionnelle.</p>
+              <Link to="/services/laverie">
+                <Button className="mt-4">
+                  En savoir plus <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
             
-            <FeatureCard icon={Settings} title="Automatisation des processus" description="Automatisez les tâches répétitives pour gagner du temps et réduire les erreurs." />
-            <div className="feature-card flex flex-col justify-between">
-              <p className="text-gray-600 mb-4">Découvrez toutes nos fonctionnalités conçues pour simplifier la gestion de votre pressing.</p>
-              <Link to="/features">
-                <Button variant="outline" className="w-full">
-                  Toutes les fonctionnalités <ArrowRight className="ml-2 h-4 w-4" />
+            {/* Service Pressing */}
+            <div className="feature-card p-8 flex flex-col items-center text-center">
+              <div className="bg-laundry-100 p-6 rounded-full mb-6">
+                <Shirt className="h-16 w-16 text-laundry-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-laundry-600 mb-4">Service Pressing</h3>
+              <p className="text-gray-600 mb-6">Service professionnel de nettoyage à sec et de repassage pour tous vos vêtements délicats, avec un soin particulier pour chaque type de tissu.</p>
+              <Link to="/services/pressing">
+                <Button className="mt-4">
+                  En savoir plus <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
