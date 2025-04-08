@@ -18,41 +18,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
-
-// Liste des couleurs disponibles
-const couleurs = [
-  "Blanc", "Noir", "Gris", "Beige", "Marron", "Rouge", 
-  "Bleu", "Bleu marine", "Vert", "Jaune", "Orange", 
-  "Rose", "Violet", "Bordeaux", "Turquoise", "Kaki"
-];
-
-// Liste des motifs disponibles
-const motifs = [
-  "Uni", "Rayé", "À carreaux", "À pois", "Floral", 
-  "Géométrique", "Imprimé", "Brodé", "Jacquard", "Tweed"
-];
-
-// Types de vêtements et leurs prix
-const vetements = [
-  { id: 1, type: "Chemise", prix: 6.50, icon: Shirt },
-  { id: 2, type: "Pantalon", prix: 8.00, icon: Shirt },
-  { id: 3, type: "Costume 2 pièces", prix: 15.00, icon: Shirt },
-  { id: 4, type: "Costume 3 pièces", prix: 22.00, icon: Shirt },
-  { id: 5, type: "Robe", prix: 12.00, icon: Shirt },
-  { id: 6, type: "Jupe", prix: 7.50, icon: Shirt },
-  { id: 7, type: "Manteau", prix: 14.00, icon: Shirt },
-  { id: 8, type: "Blouson", prix: 12.00, icon: Shirt },
-  { id: 9, type: "Imperméable", prix: 13.50, icon: Shirt },
-  { id: 10, type: "Pull", prix: 7.00, icon: Shirt },
-  { id: 11, type: "Gilet", prix: 6.00, icon: Shirt },
-  { id: 12, type: "Cravate", prix: 4.50, icon: Shirt },
-  { id: 13, type: "Écharpe", prix: 5.00, icon: Shirt },
-  { id: 14, type: "Couette", prix: 25.00, icon: Shirt },
-  { id: 15, type: "Couverture", prix: 18.00, icon: Shirt },
-];
+import { initialClothingItems, availableColors, availablePatterns, formatPrice } from "@/components/settings/clothing/types";
 
 type Vetement = {
-  id: number;
+  id: string;
   type: string;
   prix: number;
   quantite: number;
@@ -103,8 +72,8 @@ const NouvelleCommande = () => {
     setTotal(nouveauTotal);
   }, [panier]);
 
-  const ajouterVetement = (id: number) => {
-    const vetement = vetements.find(v => v.id === id);
+  const ajouterVetement = (id: string) => {
+    const vetement = initialClothingItems.find(v => v.id === id);
     if (!vetement) return;
 
     const existant = panier.find(item => item.id === id);
@@ -118,17 +87,19 @@ const NouvelleCommande = () => {
       }));
     } else {
       setPanier([...panier, { 
-        ...vetement, 
+        id: vetement.id, 
+        type: vetement.name,
+        prix: vetement.price,
         quantite: 1, 
-        total: vetement.prix,
-        couleur: "Blanc", // Couleur par défaut
-        motif: "Uni", // Motif par défaut
+        total: vetement.price,
+        couleur: vetement.colors[0] || "Blanc", // Première couleur disponible ou Blanc par défaut
+        motif: vetement.patterns[0] || "Uni", // Premier motif disponible ou Uni par défaut
         notes: ""
       }]);
     }
   };
 
-  const diminuerVetement = (id: number) => {
+  const diminuerVetement = (id: string) => {
     const existant = panier.find(item => item.id === id);
     if (!existant) return;
 
@@ -145,7 +116,7 @@ const NouvelleCommande = () => {
     }
   };
 
-  const supprimerVetement = (id: number) => {
+  const supprimerVetement = (id: string) => {
     setPanier(panier.filter(item => item.id !== id));
   };
 
@@ -153,7 +124,7 @@ const NouvelleCommande = () => {
     setDateRetrait(e.target.value);
   };
 
-  const modifierCouleur = (id: number, couleur: string) => {
+  const modifierCouleur = (id: string, couleur: string) => {
     setPanier(panier.map(item => {
       if (item.id === id) {
         return { ...item, couleur };
@@ -162,7 +133,7 @@ const NouvelleCommande = () => {
     }));
   };
 
-  const modifierMotif = (id: number, motif: string) => {
+  const modifierMotif = (id: string, motif: string) => {
     setPanier(panier.map(item => {
       if (item.id === id) {
         return { ...item, motif };
@@ -171,7 +142,7 @@ const NouvelleCommande = () => {
     }));
   };
 
-  const modifierNotes = (id: number, notes: string) => {
+  const modifierNotes = (id: string, notes: string) => {
     setPanier(panier.map(item => {
       if (item.id === id) {
         return { ...item, notes };
@@ -275,7 +246,7 @@ const NouvelleCommande = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {vetements.map((vetement) => (
+                  {initialClothingItems.map((vetement) => (
                     <Button
                       key={vetement.id}
                       variant="outline"
@@ -283,8 +254,8 @@ const NouvelleCommande = () => {
                       onClick={() => ajouterVetement(vetement.id)}
                     >
                       <Shirt className="mb-1 h-5 w-5 text-laundry-600" />
-                      <span className="text-sm">{vetement.type}</span>
-                      <span className="text-xs text-gray-500 mt-1">{vetement.prix.toFixed(2)} FCFA</span>
+                      <span className="text-sm">{vetement.name}</span>
+                      <span className="text-xs text-gray-500 mt-1">{formatPrice(vetement.price)}</span>
                     </Button>
                   ))}
                 </div>
@@ -322,7 +293,7 @@ const NouvelleCommande = () => {
                       panier.map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>{item.type}</TableCell>
-                          <TableCell className="text-center">{item.prix.toFixed(2)} FCFA</TableCell>
+                          <TableCell className="text-center">{formatPrice(item.prix)}</TableCell>
                           <TableCell>
                             <div className="flex items-center justify-center gap-2">
                               <Button
@@ -345,7 +316,7 @@ const NouvelleCommande = () => {
                             </div>
                           </TableCell>
                           <TableCell className="text-right font-medium">
-                            {item.total.toFixed(2)} FCFA
+                            {formatPrice(item.total)}
                           </TableCell>
                           <TableCell>
                             <div className="flex flex-col gap-1 text-xs">
@@ -358,7 +329,7 @@ const NouvelleCommande = () => {
                                     </Button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end" className="w-48">
-                                    {couleurs.map((couleur) => (
+                                    {availableColors.map((couleur) => (
                                       <DropdownMenuItem 
                                         key={couleur} 
                                         onClick={() => modifierCouleur(item.id, couleur)}
@@ -378,7 +349,7 @@ const NouvelleCommande = () => {
                                     </Button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end" className="w-48">
-                                    {motifs.map((motif) => (
+                                    {availablePatterns.map((motif) => (
                                       <DropdownMenuItem 
                                         key={motif} 
                                         onClick={() => modifierMotif(item.id, motif)}
@@ -418,7 +389,7 @@ const NouvelleCommande = () => {
                 <div className="mt-6 border-t pt-4">
                   <div className="flex justify-between items-center text-lg font-bold">
                     <span>Total</span>
-                    <span className="text-laundry-700">{total.toFixed(2)} FCFA</span>
+                    <span className="text-laundry-700">{formatPrice(total)}</span>
                   </div>
                 </div>
               </CardContent>
@@ -439,4 +410,3 @@ const NouvelleCommande = () => {
 };
 
 export default NouvelleCommande;
-
