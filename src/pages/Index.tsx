@@ -1,3 +1,4 @@
+
 import { ArrowRight, BarChart, Calendar, Database, Settings, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
@@ -28,7 +29,7 @@ const Index = () => {
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="section-title text-center">Fonctionnalités principales</h2>
+          <h2 className="section-title text-center">NOS SERVICES</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             <FeatureCard icon={Database} title="Gestion multi-sites" description="Suivez en temps réel les activités de tous vos établissements depuis une interface unique." />
             <FeatureCard icon={Users} title="Gestion des utilisateurs" description="Créez des comptes avec différents niveaux d'accès pour vos administrateurs et employés." />
