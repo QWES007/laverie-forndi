@@ -40,7 +40,7 @@ const Index = () => {
               <p className="text-gray-600 mb-6">Solutions complètes pour vos besoins de lavage, avec des équipements modernes et des processus optimisés pour assurer une qualité exceptionnelle.</p>
               <Link to="/services/laverie">
                 <Button className="mt-4">
-                  En savoir plus <ArrowRight className="ml-2 h-4 w-4" />
+                  Nouvelle commande <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
@@ -54,7 +54,7 @@ const Index = () => {
               <p className="text-gray-600 mb-6">Service professionnel de nettoyage à sec et de repassage pour tous vos vêtements délicats, avec un soin particulier pour chaque type de tissu.</p>
               <Link to="/services/pressing">
                 <Button className="mt-4">
-                  En savoir plus <ArrowRight className="ml-2 h-4 w-4" />
+                  Nouvelle commande <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
