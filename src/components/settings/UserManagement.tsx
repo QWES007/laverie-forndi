@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -11,14 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
-
-// Define user interface to fix type issues
-interface User {
-  id: string;
-  name: string;
-  phone: string;
-  role: "admin" | "receptionniste" | "gerant";
-}
+import { User } from "@/contexts/AuthContext";
 
 // Define form schema with zod
 const userFormSchema = z.object({

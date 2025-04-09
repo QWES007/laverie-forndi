@@ -9,34 +9,28 @@ import { Label } from "@/components/ui/label";
 import { Lock, LogIn, User } from "lucide-react";
 import { toast } from "sonner";
 import Layout from "@/components/Layout";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState("login");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
 
-  // Mock user data from UserManagement
-  const mockUsers = [
-    { id: "1", name: "Admin Système", phone: "0600000000", role: "admin", password: "admin123" },
-    { id: "2", name: "Jean Réceptionniste", phone: "0611111111", role: "receptionniste", password: "jean123" },
-    { id: "3", name: "Marie Gérante", phone: "0622222222", role: "gerant", password: "marie123" },
-  ];
+  // Redirect if already logged in
+  if (isAuthenticated) {
+    navigate('/');
+    return null;
+  }
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const user = mockUsers.find(user => user.phone === phoneNumber && user.password === password);
+    const success = await login(phoneNumber, password);
     
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify({
-        id: user.id,
-        name: user.name,
-        role: user.role,
-        phone: user.phone
-      }));
-      
-      toast.success(`Bienvenue, ${user.name}!`);
+    if (success) {
+      toast.success("Connexion réussie");
       navigate('/');
     } else {
       toast.error("Numéro de téléphone ou mot de passe incorrect");

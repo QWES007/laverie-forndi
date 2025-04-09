@@ -1,11 +1,14 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X, Settings } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout, isAdmin } = useAuth();
+  const navigate = useNavigate();
   
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,15 +31,33 @@ const Navbar = () => {
             </div>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Button variant="outline" className="mr-3" asChild>
-              <Link to="/login">Se connecter</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/settings">
-                <Settings className="h-4 w-4 mr-2" />
-                Paramètres
-              </Link>
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <div className="mr-4 text-sm text-gray-600">
+                  Bonjour, <span className="font-medium">{user?.name}</span>
+                </div>
+                {isAdmin() && (
+                  <Button variant="outline" className="mr-3" asChild>
+                    <Link to="/settings">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Paramètres
+                    </Link>
+                  </Button>
+                )}
+                <Button 
+                  variant="outline" 
+                  onClick={logout}
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Déconnexion
+                </Button>
+              </>
+            ) : (
+              <Button variant="outline" className="mr-3" asChild>
+                <Link to="/login">Se connecter</Link>
+              </Button>
+            )}
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button onClick={toggleMenu} className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-laundry-500">
@@ -54,15 +75,33 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200 flex flex-col space-y-2 px-4">
-            <Button variant="outline" className="w-full justify-center" asChild>
-              <Link to="/login">Se connecter</Link>
-            </Button>
-            <Button className="w-full justify-center" asChild>
-              <Link to="/settings">
-                <Settings className="h-4 w-4 mr-2" />
-                Paramètres
-              </Link>
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <div className="py-2 text-sm text-gray-600">
+                  Bonjour, <span className="font-medium">{user?.name}</span>
+                </div>
+                {isAdmin() && (
+                  <Button variant="outline" className="w-full justify-center" asChild>
+                    <Link to="/settings">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Paramètres
+                    </Link>
+                  </Button>
+                )}
+                <Button 
+                  variant="outline" 
+                  onClick={logout}
+                  className="w-full justify-center text-red-500 hover:text-red-700 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Déconnexion
+                </Button>
+              </>
+            ) : (
+              <Button variant="outline" className="w-full justify-center" asChild>
+                <Link to="/login">Se connecter</Link>
+              </Button>
+            )}
           </div>
         </div>}
     </nav>;

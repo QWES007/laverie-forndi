@@ -12,6 +12,8 @@ import NouvelleCommande from "./pages/services/pressing/NouvelleCommande";
 import ListeCommandes from "./pages/services/pressing/ListeCommandes";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -19,20 +21,64 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/services/pressing" element={<PressingService />} />
-          <Route path="/services/pressing/nouvelle-commande" element={<NouvelleCommande />} />
-          <Route path="/services/pressing/commandes" element={<ListeCommandes />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route 
+              path="/" 
+              element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/products" 
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/settings" 
+              element={
+                <ProtectedRoute adminOnly>
+                  <Settings />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/services/pressing" 
+              element={
+                <ProtectedRoute>
+                  <PressingService />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/services/pressing/nouvelle-commande" 
+              element={
+                <ProtectedRoute>
+                  <NouvelleCommande />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/services/pressing/commandes" 
+              element={
+                <ProtectedRoute>
+                  <ListeCommandes />
+                </ProtectedRoute>
+              } 
+            />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+          <Sonner />
+        </AuthProvider>
       </BrowserRouter>
-      <Toaster />
-      <Sonner />
     </TooltipProvider>
   </QueryClientProvider>
 );
