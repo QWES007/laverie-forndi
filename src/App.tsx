@@ -11,6 +11,8 @@ import PressingService from "./pages/services/pressing";
 import NouvelleCommande from "./pages/services/pressing/NouvelleCommande";
 import ListeCommandes from "./pages/services/pressing/ListeCommandes";
 import RapportDetaille from "./pages/services/pressing/RapportDetaille";
+import LaverieService from "./pages/services/laverie";
+import NouvelleCommandeLaverie from "./pages/services/laverie/NouvelleCommande";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -78,6 +80,23 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <RapportDetaille />
+                </ProtectedRoute>
+              } 
+            />
+            {/* Routes du service de laverie */}
+            <Route 
+              path="/services/laverie" 
+              element={
+                <ProtectedRoute>
+                  <LaverieService />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/services/laverie/nouvelle-commande" 
+              element={
+                <ProtectedRoute>
+                  <NouvelleCommandeLaverie />
                 </ProtectedRoute>
               } 
             />
