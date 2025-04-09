@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     { id: "1", name: "Admin Système", phone: "0600000000", role: "admin", password: "admin123" },
     { id: "2", name: "Jean Réceptionniste", phone: "0611111111", role: "receptionniste", password: "jean123" },
     { id: "3", name: "Marie Gérante", phone: "0622222222", role: "gerant", password: "marie123" },
-  ];
+  ] as const;
 
   // Check if there's a user in localStorage when the component mounts
   useEffect(() => {
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const user = mockUsers.find(user => user.phone === phone && user.password === password);
     
     if (user) {
-      const userData = {
+      const userData: User = {
         id: user.id,
         name: user.name,
         role: user.role,
