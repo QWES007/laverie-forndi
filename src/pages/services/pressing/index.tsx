@@ -141,9 +141,11 @@ const PressingService = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full">
-                Rapport détaillé <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <Link to="/services/pressing/rapport-detaille" className="w-full">
+                <Button variant="outline" className="w-full">
+                  Rapport détaillé <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </CardFooter>
           </Card>
         </div>

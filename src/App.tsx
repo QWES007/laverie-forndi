@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import PressingService from "./pages/services/pressing";
 import NouvelleCommande from "./pages/services/pressing/NouvelleCommande";
 import ListeCommandes from "./pages/services/pressing/ListeCommandes";
+import RapportDetaille from "./pages/services/pressing/RapportDetaille";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -69,6 +70,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ListeCommandes />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/services/pressing/rapport-detaille" 
+              element={
+                <ProtectedRoute>
+                  <RapportDetaille />
                 </ProtectedRoute>
               } 
             />
