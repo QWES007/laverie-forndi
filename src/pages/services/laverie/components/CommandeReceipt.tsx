@@ -4,6 +4,7 @@ import { formatPrice } from "@/components/settings/clothing/types";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Client, FormulaireBundle, VetementSelection } from "../types";
+import "./receipt-print.css";
 
 interface CommandeReceiptProps {
   client: Client;
@@ -47,7 +48,7 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
       
       <div 
         ref={printRef} 
-        className="max-w-2xl mx-auto bg-white p-8 shadow-sm print:shadow-none print:p-0"
+        className="max-w-2xl mx-auto bg-white p-8 shadow-sm print:shadow-none print:p-0 print-container"
       >
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-laundry-700">LAVERIE MODERNE FORNDI</h1>
@@ -154,39 +155,6 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
           <p>Merci de votre confiance !</p>
         </div>
       </div>
-      
-      <style jsx global>{`
-        @media print {
-          @page {
-            size: A4;
-            margin: 10mm;
-          }
-          body * {
-            visibility: hidden;
-          }
-          #root * {
-            visibility: hidden;
-          }
-          #printable, #printable * {
-            visibility: visible;
-          }
-          #printable {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-          }
-          .print\\:shadow-none {
-            box-shadow: none !important;
-          }
-          .print\\:p-0 {
-            padding: 0 !important;
-          }
-          .print\\:hidden {
-            display: none !important;
-          }
-        }
-      `}</style>
     </>
   );
 };
