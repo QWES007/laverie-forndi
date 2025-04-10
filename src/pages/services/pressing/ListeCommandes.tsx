@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -29,9 +28,9 @@ import {
   TabsTrigger 
 } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Check, Clock, Package } from "lucide-react";
+import { ArrowLeft, Check, Clock, Package, Eye } from "lucide-react";
+import OrderDetail from "./components/OrderDetail";
 
-// Mock data for demonstration
 const commandesData = [
   {
     id: "CMD-230422-0045",
@@ -80,7 +79,6 @@ const commandesData = [
   }
 ];
 
-// Group orders by date
 const groupCommandesByDate = (commandes) => {
   const grouped = {};
   
@@ -141,6 +139,8 @@ const getStatusBadge = (statut) => {
 const ListeCommandes = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("tous");
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [orderDetailOpen, setOrderDetailOpen] = useState(false);
   
   const filteredCommandes = commandesData.filter(cmd => {
     if (activeTab === "tous") return true;
@@ -148,6 +148,11 @@ const ListeCommandes = () => {
   });
   
   const groupedCommandes = groupCommandesByDate(filteredCommandes);
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    setOrderDetailOpen(true);
+  };
 
   return (
     <Layout>
@@ -184,28 +189,33 @@ const ListeCommandes = () => {
           </TabsList>
           
           <TabsContent value="tous" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} onOrderClick={handleOrderClick} />
           </TabsContent>
           
           <TabsContent value="en_cours" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} onOrderClick={handleOrderClick} />
           </TabsContent>
           
           <TabsContent value="pret" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} onOrderClick={handleOrderClick} />
           </TabsContent>
           
           <TabsContent value="livre" className="mt-6">
-            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} />
+            <OrdersContent groupedCommandes={groupedCommandes} navigate={navigate} onOrderClick={handleOrderClick} />
           </TabsContent>
         </Tabs>
+
+        <OrderDetail
+          open={orderDetailOpen}
+          onOpenChange={setOrderDetailOpen}
+          order={selectedOrder}
+        />
       </div>
     </Layout>
   );
 };
 
-// Updated to accept navigate as a prop
-const OrdersContent = ({ groupedCommandes, navigate }) => {
+const OrdersContent = ({ groupedCommandes, navigate, onOrderClick }) => {
   return groupedCommandes.length > 0 ? (
     <div className="space-y-8">
       {groupedCommandes.map((group, index) => (
@@ -225,17 +235,29 @@ const OrdersContent = ({ groupedCommandes, navigate }) => {
                 <TableHead>Articles</TableHead>
                 <TableHead>Montant</TableHead>
                 <TableHead>Statut</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {group.commandes.map((commande) => (
-                <TableRow key={commande.id}>
+                <TableRow key={commande.id} className="cursor-pointer hover:bg-gray-50">
                   <TableCell className="font-medium">{commande.id}</TableCell>
                   <TableCell>{commande.client}</TableCell>
                   <TableCell>{format(commande.retrait, 'dd/MM/yyyy')}</TableCell>
                   <TableCell>{commande.articles}</TableCell>
                   <TableCell>{commande.montant} FCFA</TableCell>
                   <TableCell>{getStatusBadge(commande.statut)}</TableCell>
+                  <TableCell className="text-right">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 w-8 p-0"
+                      onClick={() => onOrderClick(commande)}
+                    >
+                      <span className="sr-only">Voir les détails</span>
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

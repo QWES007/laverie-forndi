@@ -3,22 +3,41 @@ import React, { useEffect, useRef } from "react";
 import { formatPrice } from "@/components/settings/clothing/types";
 import { ArrowLeft, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Client, FormulaireBundle, VetementSelection } from "../types";
 import "./receipt-print.css";
+
+interface Client {
+  nom: string;
+  prenom: string;
+  telephone: string;
+  email: string;
+}
+
+interface Vetement {
+  id: string;
+  type: string;
+  prix: number;
+  quantite: number;
+  total: number;
+  couleur?: string;
+  motif?: string;
+  notes?: string;
+}
 
 interface CommandeReceiptProps {
   client: Client;
-  bundle: FormulaireBundle;
+  panier: Vetement[];
+  total: number;
   dateRetrait: string;
-  vetements: VetementSelection[];
+  orderId: string;
   onClose: () => void;
 }
 
 const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
   client,
-  bundle,
+  panier,
+  total,
   dateRetrait,
-  vetements,
+  orderId,
   onClose,
 }) => {
   const printRef = useRef<HTMLDivElement>(null);
@@ -33,7 +52,6 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
   }, []);
 
   const today = new Date().toLocaleDateString();
-  const numeroCommande = `LAV-${new Date().toISOString().slice(2, 10).replace(/-/g, "")}-${Math.floor(Math.random() * 9000) + 1000}`;
 
   return (
     <>
@@ -51,14 +69,14 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
         className="max-w-2xl mx-auto bg-white p-8 shadow-sm print:shadow-none print:p-0 print-container"
       >
         <div className="text-center mb-6 border-b pb-4">
-          <h1 className="text-2xl font-bold text-laundry-700">LAVERIE MODERNE FORNDI</h1>
-          <p className="text-sm text-gray-500">Reçu de commande - Service Laverie</p>
+          <h1 className="text-2xl font-bold text-laundry-700">PRESSING MODERNE FORNDI</h1>
+          <p className="text-sm text-gray-500">Reçu de commande - Service Pressing</p>
         </div>
         
         <div className="mb-6 flex justify-between">
           <div>
             <p className="text-sm text-gray-600">Numéro de commande:</p>
-            <p className="font-bold">{numeroCommande}</p>
+            <p className="font-bold">{orderId}</p>
           </div>
           <div>
             <p className="text-sm text-gray-600">Date:</p>
@@ -90,39 +108,49 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
         
         <div className="mb-6">
           <h2 className="font-semibold mb-2">Détails de la commande</h2>
-          <div className="mb-4 bg-gray-50 p-3 rounded-md">
-            <p className="text-sm text-gray-600">Forfait:</p>
-            <p className="font-medium">{bundle.description} - {formatPrice(bundle.prix)}</p>
-          </div>
           
-          <p className="text-sm text-gray-600 mb-2">Vêtements:</p>
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50">
-                <th className="py-2 px-2 text-left">Description</th>
+                <th className="py-2 px-2 text-left">Article</th>
                 <th className="py-2 px-2 text-center">Qté</th>
-                <th className="py-2 px-2 text-left">Couleur</th>
-                <th className="py-2 px-2 text-left">Motif</th>
+                <th className="py-2 px-2 text-center">Prix</th>
+                <th className="py-2 px-2 text-right">Total</th>
               </tr>
             </thead>
             <tbody>
-              {vetements.map((item) => (
+              {panier.map((item) => (
                 <tr key={item.id} className="border-b">
-                  <td className="py-2 px-2">{item.nom}</td>
+                  <td className="py-2 px-2">
+                    {item.type}
+                    {(item.couleur || item.motif) && (
+                      <div className="text-xs text-gray-500">
+                        {item.couleur && <span>Couleur: {item.couleur}</span>}
+                        {item.couleur && item.motif && <span> · </span>}
+                        {item.motif && <span>Motif: {item.motif}</span>}
+                      </div>
+                    )}
+                  </td>
                   <td className="py-2 px-2 text-center">{item.quantite}</td>
-                  <td className="py-2 px-2">{item.couleur || "-"}</td>
-                  <td className="py-2 px-2">{item.motif || "-"}</td>
+                  <td className="py-2 px-2 text-center">{formatPrice(item.prix)}</td>
+                  <td className="py-2 px-2 text-right">{formatPrice(item.total)}</td>
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr className="font-bold">
+                <td colSpan={3} className="py-3 text-right pr-2">Total</td>
+                <td className="py-3 text-right">{formatPrice(total)}</td>
+              </tr>
+            </tfoot>
           </table>
           
-          {vetements.some(item => item.notes) && (
+          {panier.some(item => item.notes) && (
             <div className="mt-4">
               <p className="text-sm text-gray-600 mb-2">Notes spécifiques:</p>
-              {vetements.filter(item => item.notes).map(item => (
+              {panier.filter(item => item.notes).map(item => (
                 <div key={`note-${item.id}`} className="text-sm mb-1">
-                  <span className="font-medium">{item.nom}:</span> {item.notes}
+                  <span className="font-medium">{item.type}:</span> {item.notes}
                 </div>
               ))}
             </div>
@@ -139,8 +167,8 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
         
         <div className="mt-6 border-t pt-4">
           <div className="flex justify-between items-center text-lg font-bold mb-6">
-            <span>Total</span>
-            <span className="text-laundry-700">{formatPrice(bundle.prix)}</span>
+            <span>Montant total</span>
+            <span className="text-laundry-700">{formatPrice(total)}</span>
           </div>
         </div>
         

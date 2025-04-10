@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { VetementSelection } from "../types";
 
 interface VetementListProps {
@@ -33,11 +33,11 @@ const VetementList: React.FC<VetementListProps> = ({ vetements, supprimerVetemen
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
             onClick={() => supprimerVetement(item.id)}
           >
             <span className="sr-only">Supprimer</span>
-            <ArrowRight className="h-4 w-4" />
+            <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       ))}

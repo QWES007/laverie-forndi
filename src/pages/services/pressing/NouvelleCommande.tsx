@@ -5,7 +5,6 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shirt, Plus, Minus, ArrowRight, Trash2 } from "lucide-react";
@@ -19,6 +18,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { initialClothingItems, availableColors, availablePatterns, formatPrice } from "@/components/settings/clothing/types";
+import CommandeReceipt from "./components/CommandeReceipt";
 
 type Vetement = {
   id: string;
@@ -43,6 +43,8 @@ const NouvelleCommande = () => {
   const [dateRetrait, setDateRetrait] = useState<string>("");
   const [total, setTotal] = useState<number>(0);
   const [orderId, setOrderId] = useState<string>("");
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [clientData, setClientData] = useState<Client | null>(null);
   const navigate = useNavigate();
 
   const form = useForm<Client>({
@@ -176,11 +178,26 @@ const NouvelleCommande = () => {
       description: "Commande enregistrée avec succès!",
     });
 
-    // Redirection vers la page de confirmation (à créer)
-    setTimeout(() => {
-      navigate("/services/pressing");
-    }, 2000);
+    // Afficher le reçu
+    setClientData(data);
+    setShowReceipt(true);
   };
+
+  if (showReceipt && clientData) {
+    return (
+      <CommandeReceipt
+        client={clientData}
+        panier={panier}
+        total={total}
+        dateRetrait={dateRetrait}
+        orderId={orderId}
+        onClose={() => {
+          setShowReceipt(false);
+          navigate("/services/pressing");
+        }}
+      />
+    );
+  }
 
   return (
     <Layout>
