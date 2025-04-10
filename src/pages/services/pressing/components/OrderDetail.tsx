@@ -15,6 +15,10 @@ interface OrderDetailProps {
 const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) => {
   if (!order) return null;
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl">
@@ -93,7 +97,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) 
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             <X className="mr-2 h-4 w-4" /> Fermer
           </Button>
-          <Button onClick={() => window.print()}>
+          <Button onClick={handlePrint}>
             <Printer className="mr-2 h-4 w-4" /> Imprimer le reçu
           </Button>
         </DialogFooter>
