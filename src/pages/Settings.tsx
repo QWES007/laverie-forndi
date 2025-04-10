@@ -3,7 +3,7 @@ import { useState } from "react";
 import Layout from "@/components/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import UserManagement from "@/components/settings/UserManagement";
+import UserManagement from "@/components/settings/user-management/UserManagement";
 import ClothingManagement from "@/components/settings/ClothingManagement";
 
 const Settings = () => {
