@@ -22,6 +22,14 @@ export type VetementSelection = {
   notes?: string;
 };
 
+export type ReceiptData = {
+  client: Client;
+  bundle: FormulaireBundle;
+  dateRetrait: string;
+  vetements: VetementSelection[];
+  numeroCommande: string;
+};
+
 // Définir les prix pour les différents lots
 export const bundlePrices: FormulaireBundle[] = [
   { id: 1, quantite: 5, prix: 1500, description: "5 HABITS" },

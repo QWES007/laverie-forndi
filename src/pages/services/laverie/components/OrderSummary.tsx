@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import CommandeReceipt from "./CommandeReceipt";
 
 interface OrderSummaryProps {
   bundleSelectionne: FormulaireBundle | null;
@@ -32,6 +33,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
 }) => {
   const navigate = useNavigate();
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [showReceipt, setShowReceipt] = React.useState(false);
+  const [clientData, setClientData] = React.useState<Client | null>(null);
   const [nouvelItem, setNouvelItem] = React.useState<VetementSelection>({
     id: "",
     nom: "",
@@ -65,6 +68,27 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   };
 
   const totalItems = vetements.reduce((acc, item) => acc + item.quantite, 0);
+  
+  const handleSubmit = (data: Client) => {
+    setClientData(data);
+    setShowReceipt(true);
+    onSubmit(data);
+  };
+
+  if (showReceipt && bundleSelectionne && clientData) {
+    return (
+      <CommandeReceipt 
+        client={clientData}
+        bundle={bundleSelectionne}
+        dateRetrait={dateRetrait}
+        vetements={vetements}
+        onClose={() => {
+          setShowReceipt(false);
+          navigate("/services/laverie");
+        }}
+      />
+    );
+  }
   
   return (
     <>
@@ -218,7 +242,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             Annuler
           </Button>
           <Button 
-            onClick={form.handleSubmit(onSubmit)}
+            onClick={form.handleSubmit(handleSubmit)}
             disabled={!bundleSelectionne || totalItems === 0}
           >
             Enregistrer la commande <ArrowRight className="ml-2 h-4 w-4" />
