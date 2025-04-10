@@ -99,3 +99,29 @@
     @apply bg-gradient-to-r from-laundry-600 to-laundry-400;
   }
 }
+
+/* Add print styles for better printing */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .dialog-content, .dialog-content * {
+    visibility: visible;
+  }
+  
+  .dialog-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  
+  .print-hide {
+    display: none !important;
+  }
+  
+  button {
+    display: none !important;
+  }
+}

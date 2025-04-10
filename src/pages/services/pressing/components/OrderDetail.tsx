@@ -1,10 +1,11 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Printer, X } from "lucide-react";
 import { formatPrice } from "@/components/settings/clothing/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface OrderDetailProps {
   open: boolean;
@@ -13,6 +14,8 @@ interface OrderDetailProps {
 }
 
 const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) => {
+  const isMobile = useIsMobile();
+  
   if (!order) return null;
 
   const handlePrint = () => {
@@ -21,7 +24,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className={`${isMobile ? 'max-w-[95%] p-4' : 'max-w-3xl'}`}>
         <DialogHeader>
           <DialogTitle>Détails de la commande {order.id}</DialogTitle>
           <DialogDescription>
@@ -30,7 +33,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) 
         </DialogHeader>
 
         <div className="mt-4 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className={`${isMobile ? 'grid grid-cols-1 gap-3' : 'grid grid-cols-2 gap-4'}`}>
             <div>
               <h3 className="text-sm font-medium text-gray-500">Informations client</h3>
               <p className="mt-1 text-sm">{order.client}</p>
@@ -41,14 +44,14 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) 
             </div>
           </div>
 
-          <div>
+          <div className="overflow-x-auto">
             <h3 className="text-sm font-medium text-gray-500 mb-2">Articles</h3>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Article</TableHead>
                   <TableHead className="text-center">Quantité</TableHead>
-                  <TableHead className="text-center">Prix unitaire</TableHead>
+                  <TableHead className={`${isMobile ? 'hidden' : 'text-center'}`}>Prix unitaire</TableHead>
                   <TableHead className="text-right">Total</TableHead>
                 </TableRow>
               </TableHeader>
@@ -57,20 +60,20 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) 
                 <TableRow>
                   <TableCell>Chemise homme - Blanc</TableCell>
                   <TableCell className="text-center">2</TableCell>
-                  <TableCell className="text-center">{formatPrice(order.montant / order.articles / 2)}</TableCell>
+                  <TableCell className={`${isMobile ? 'hidden' : 'text-center'}`}>{formatPrice(order.montant / order.articles / 2)}</TableCell>
                   <TableCell className="text-right">{formatPrice(order.montant / order.articles)}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Pantalon - Beige</TableCell>
                   <TableCell className="text-center">1</TableCell>
-                  <TableCell className="text-center">{formatPrice(order.montant / order.articles)}</TableCell>
+                  <TableCell className={`${isMobile ? 'hidden' : 'text-center'}`}>{formatPrice(order.montant / order.articles)}</TableCell>
                   <TableCell className="text-right">{formatPrice(order.montant / order.articles)}</TableCell>
                 </TableRow>
                 {order.articles > 2 && (
                   <TableRow>
                     <TableCell>Veste - Bleu marine</TableCell>
                     <TableCell className="text-center">1</TableCell>
-                    <TableCell className="text-center">{formatPrice(order.montant / order.articles)}</TableCell>
+                    <TableCell className={`${isMobile ? 'hidden' : 'text-center'}`}>{formatPrice(order.montant / order.articles)}</TableCell>
                     <TableCell className="text-right">{formatPrice(order.montant / order.articles)}</TableCell>
                   </TableRow>
                 )}
@@ -78,7 +81,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) 
             </Table>
           </div>
 
-          <div className="flex justify-between">
+          <div className={`${isMobile ? 'space-y-3' : 'flex justify-between'}`}>
             <div>
               <h3 className="text-sm font-medium text-gray-500">Statut actuel</h3>
               <p className="mt-1 text-sm">
@@ -86,18 +89,18 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ open, onOpenChange, order }) 
                  order.statut === "pret" ? "Prêt pour le retrait" : "Livré"}
               </p>
             </div>
-            <div className="text-right">
+            <div className={`${isMobile ? '' : 'text-right'}`}>
               <h3 className="text-sm font-medium text-gray-500">Total</h3>
               <p className="mt-1 text-sm font-semibold">{formatPrice(order.montant)}</p>
             </div>
           </div>
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+        <DialogFooter className={`${isMobile ? 'flex-col gap-2' : ''}`}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className={`${isMobile ? 'w-full' : ''}`}>
             <X className="mr-2 h-4 w-4" /> Fermer
           </Button>
-          <Button onClick={handlePrint}>
+          <Button onClick={handlePrint} className={`${isMobile ? 'w-full' : ''}`}>
             <Printer className="mr-2 h-4 w-4" /> Imprimer le reçu
           </Button>
         </DialogFooter>
