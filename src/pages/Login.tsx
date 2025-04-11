@@ -38,11 +38,11 @@ const Login = () => {
     }
   };
 
-  // Washing machine images for the carousel
+  // Washing machine images for the carousel - updated with public URLs that are more likely to work
   const washingMachineImages = [
-    "https://images.unsplash.com/photo-1626806787461-102c1a78d090?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?q=80&w=1000&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1626806787461-102c1a78d090?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
   ];
 
   return (
@@ -51,7 +51,7 @@ const Login = () => {
         {/* Company Logo */}
         <div className="mb-8">
           <img 
-            src="/logo-laundry.png" 
+            src="https://via.placeholder.com/240x120?text=Laverie+Moderne+Forndi" 
             alt="Laverie Moderne Forndi" 
             className="h-24 object-contain"
           />
