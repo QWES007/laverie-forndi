@@ -11,7 +11,6 @@ import ReceiptTotal from "../../shared/receipt/ReceiptTotal";
 import ReceiptFooter from "../../shared/receipt/ReceiptFooter";
 import ReceiptBundleInfo from "./ReceiptBundleInfo";
 import ReceiptVetementTable from "./ReceiptVetementTable";
-import "./receipt-print.css";
 
 interface CommandeReceiptProps {
   client: Client;
@@ -62,7 +61,7 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
           email={client.email}
         />
         
-        <div className="mb-6">
+        <div className="mb-4 print-break-inside-avoid">
           <h2 className="font-semibold mb-2">Détails de la commande</h2>
           <ReceiptBundleInfo bundle={bundle} />
           <ReceiptVetementTable vetements={vetements} />

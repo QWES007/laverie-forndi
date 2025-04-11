@@ -9,7 +9,6 @@ import ReceiptClientInfo from "../../shared/receipt/ReceiptClientInfo";
 import ReceiptPickupInfo from "../../shared/receipt/ReceiptPickupInfo";
 import ReceiptFooter from "../../shared/receipt/ReceiptFooter";
 import ReceiptVetementTable from "./ReceiptVetementTable";
-import "./receipt-print.css";
 
 interface CommandeReceiptProps {
   client: Client;
@@ -61,15 +60,15 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
           email={client.email}
         />
         
-        <div className="mb-6">
+        <div className="mb-4 print-break-inside-avoid">
           <h2 className="font-semibold mb-2">Détails de la commande</h2>
           <ReceiptVetementTable panier={panier} total={total} />
         </div>
         
         <ReceiptPickupInfo dateRetrait={dateRetrait} />
         
-        <div className="mt-6 border-t pt-4 total-section">
-          <div className="flex justify-between items-center text-lg font-bold mb-6">
+        <div className="mt-4 border-t pt-3 total-section print-break-inside-avoid">
+          <div className="flex justify-between items-center text-lg font-bold mb-4">
             <span>Montant total</span>
             <span className="text-laundry-700">{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(total)}</span>
           </div>

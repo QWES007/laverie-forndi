@@ -1,7 +1,8 @@
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileText } from "lucide-react";
+import "./receipt-print.css";
 
 interface ReceiptLayoutProps {
   children: ReactNode;
@@ -9,6 +10,16 @@ interface ReceiptLayoutProps {
 }
 
 const ReceiptLayout: React.FC<ReceiptLayoutProps> = ({ children, onClose }) => {
+  useEffect(() => {
+    // Ajouter une classe au body pour les styles d'impression
+    document.body.classList.add("printing-receipt");
+    
+    return () => {
+      // Nettoyer en enlevant la classe quand le composant est démonté
+      document.body.classList.remove("printing-receipt");
+    };
+  }, []);
+  
   return (
     <>
       <div className="p-4 bg-white print:hidden">
