@@ -131,18 +131,68 @@
   .receipt-copy {
     width: 48%;
     font-size: 8pt;
+    border: 1px solid #ccc;
+    padding: 5mm;
+    background-color: white;
+    background-image: linear-gradient(#f0f8ff 1px, transparent 1px), 
+                      linear-gradient(90deg, #f0f8ff 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .receipt-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #0052cc;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+  }
+  
+  .receipt-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .receipt-title {
+    color: #0052cc;
   }
   
   .receipt-copy h1 {
-    font-size: 14pt;
+    font-size: 12pt;
+    color: #0052cc;
+    margin: 0;
   }
   
   .receipt-copy h2 {
     font-size: 10pt;
+    margin: 5px 0;
   }
   
-  .receipt-copy table {
-    font-size: 7pt;
+  .receipt-number {
+    color: #cc0000;
+    font-weight: bold;
+  }
+  
+  .client-info {
+    border: 1px solid #0052cc;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .receipt-table th, 
+  .receipt-table td {
+    border: 1px solid #0052cc;
+    padding: 3px;
+    text-align: left;
+  }
+  
+  .receipt-table th {
+    background-color: #e6f0ff;
   }
   
   .dialog-content, .dialog-content * {
