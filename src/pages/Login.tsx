@@ -10,6 +10,7 @@ import { Lock, LogIn, User } from "lucide-react";
 import { toast } from "sonner";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState("login");
@@ -37,9 +38,44 @@ const Login = () => {
     }
   };
 
+  // Washing machine images for the carousel
+  const washingMachineImages = [
+    "https://images.unsplash.com/photo-1626806787461-102c1a78d090?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?q=80&w=1000&auto=format&fit=crop"
+  ];
+
   return (
     <Layout>
-      <div className="container mx-auto flex items-center justify-center min-h-[calc(100vh-16rem)] py-12">
+      <div className="container mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-16rem)] py-12">
+        {/* Company Logo */}
+        <div className="mb-8">
+          <img 
+            src="/logo-laundry.png" 
+            alt="Laverie Moderne Forndi" 
+            className="h-24 object-contain"
+          />
+        </div>
+
+        {/* Carousel with washing machine images */}
+        <div className="w-full max-w-md mb-8">
+          <Carousel className="w-full">
+            <CarouselContent>
+              {washingMachineImages.map((img, index) => (
+                <CarouselItem key={index}>
+                  <div className="p-1 h-48">
+                    <img 
+                      src={img} 
+                      alt={`Machine à laver ${index + 1}`} 
+                      className="w-full h-full object-cover rounded-lg shadow-md"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
+
         <div className="w-full max-w-md">
           <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-2 mb-8">
