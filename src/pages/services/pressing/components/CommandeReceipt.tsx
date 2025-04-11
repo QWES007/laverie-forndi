@@ -43,7 +43,6 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
 
   return (
     <ReceiptLayout onClose={onClose}>
-      {/* First receipt copy */}
       <ReceiptCopy ref={printRef}>
         <ReceiptHeader 
           title="PRESSING MODERNE FORNDI" 
@@ -65,42 +64,6 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
         <div className="mb-6">
           <h2 className="font-semibold mb-2">Détails de la commande</h2>
           <ReceiptVetementTable panier={panier} total={total} />
-        </div>
-        
-        <ReceiptPickupInfo dateRetrait={dateRetrait} />
-        
-        <div className="mt-6 border-t pt-4 total-section">
-          <div className="flex justify-between items-center text-lg font-bold mb-6">
-            <span>Montant total</span>
-            <span className="text-laundry-700">{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(total)}</span>
-          </div>
-        </div>
-        
-        <ReceiptFooter />
-      </ReceiptCopy>
-      
-      {/* Second receipt copy */}
-      <ReceiptCopy>
-        <ReceiptHeader 
-          title="PRESSING MODERNE FORNDI" 
-          subtitle="Reçu de commande - Service Pressing" 
-        />
-        
-        <ReceiptOrderInfo 
-          orderNumber={orderId} 
-          date={today} 
-        />
-        
-        <ReceiptClientInfo 
-          nom={client.nom}
-          prenom={client.prenom}
-          telephone={client.telephone}
-          email={client.email}
-        />
-        
-        <div className="mb-6">
-          <h2 className="font-semibold mb-2">Détails de la commande</h2>
-          <ReceiptVetementTable panier={panier} total={total} copyId="copy-" />
         </div>
         
         <ReceiptPickupInfo dateRetrait={dateRetrait} />

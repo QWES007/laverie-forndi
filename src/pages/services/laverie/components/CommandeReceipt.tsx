@@ -44,7 +44,6 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
 
   return (
     <ReceiptLayout onClose={onClose}>
-      {/* First receipt copy */}
       <ReceiptCopy ref={printRef}>
         <ReceiptHeader 
           title="LAVERIE MODERNE FORNDI" 
@@ -67,38 +66,6 @@ const CommandeReceipt: React.FC<CommandeReceiptProps> = ({
           <h2 className="font-semibold mb-2">Détails de la commande</h2>
           <ReceiptBundleInfo bundle={bundle} />
           <ReceiptVetementTable vetements={vetements} />
-        </div>
-        
-        <ReceiptPickupInfo dateRetrait={dateRetrait} />
-        
-        <ReceiptTotal total={bundle.prix} />
-        
-        <ReceiptFooter />
-      </ReceiptCopy>
-      
-      {/* Second receipt copy */}
-      <ReceiptCopy>
-        <ReceiptHeader 
-          title="LAVERIE MODERNE FORNDI" 
-          subtitle="Reçu de commande - Service Laverie" 
-        />
-        
-        <ReceiptOrderInfo 
-          orderNumber={numeroCommande} 
-          date={today} 
-        />
-        
-        <ReceiptClientInfo 
-          nom={client.nom}
-          prenom={client.prenom}
-          telephone={client.telephone}
-          email={client.email}
-        />
-        
-        <div className="mb-6">
-          <h2 className="font-semibold mb-2">Détails de la commande</h2>
-          <ReceiptBundleInfo bundle={bundle} />
-          <ReceiptVetementTable vetements={vetements} copyId="copy-" />
         </div>
         
         <ReceiptPickupInfo dateRetrait={dateRetrait} />
