@@ -36,7 +36,7 @@
     background-color: white;
     background-image: linear-gradient(#f0f8ff 1px, transparent 1px), 
                       linear-gradient(90deg, #f0f8ff 1px, transparent 1px);
-    background-size: The grid should be 20px by 20px.
+    background-size: 20px 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
