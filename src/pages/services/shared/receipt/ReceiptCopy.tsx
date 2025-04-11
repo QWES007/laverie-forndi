@@ -10,7 +10,7 @@ const ReceiptCopy = forwardRef<HTMLDivElement, ReceiptCopyProps>(
     return (
       <div
         ref={ref}
-        className="receipt-copy max-w-2xl mx-auto bg-white p-8 shadow-sm print:shadow-none print:p-4"
+        className="receipt-copy max-w-2xl mx-auto bg-white p-4 shadow-sm print:shadow-none print:p-2"
       >
         {children}
       </div>
