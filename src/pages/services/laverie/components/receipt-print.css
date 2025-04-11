@@ -1,8 +1,8 @@
 
 @media print {
   @page {
-    size: A4;
-    margin: 15mm;
+    size: A5 landscape;
+    margin: 5mm;
   }
   
   body * {
@@ -18,6 +18,29 @@
     left: 0;
     top: 0;
     width: 100%;
+  }
+  
+  .print-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .receipt-copy {
+    width: 48%;
+    font-size: 8pt;
+  }
+  
+  .receipt-copy h1 {
+    font-size: 14pt;
+  }
+  
+  .receipt-copy h2 {
+    font-size: 10pt;
+  }
+  
+  .receipt-copy table {
+    font-size: 7pt;
   }
   
   .no-print {

@@ -102,8 +102,47 @@
 
 /* Add print styles for better printing */
 @media print {
+  @page {
+    size: A5 landscape;
+    margin: 5mm;
+  }
+  
   body * {
     visibility: hidden;
+  }
+  
+  .print-container, .print-container * {
+    visibility: visible;
+  }
+  
+  .print-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  
+  .print-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .receipt-copy {
+    width: 48%;
+    font-size: 8pt;
+  }
+  
+  .receipt-copy h1 {
+    font-size: 14pt;
+  }
+  
+  .receipt-copy h2 {
+    font-size: 10pt;
+  }
+  
+  .receipt-copy table {
+    font-size: 7pt;
   }
   
   .dialog-content, .dialog-content * {
