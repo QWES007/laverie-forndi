@@ -10,7 +10,7 @@ import { Lock, LogIn, User } from "lucide-react";
 import { toast } from "sonner";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState("login");
@@ -38,11 +38,11 @@ const Login = () => {
     }
   };
 
-  // Washing machine images for the carousel - updated with public URLs that are more likely to work
+  // Washing machine images for the carousel - updating with more reliable image URLs
   const washingMachineImages = [
-    "https://images.unsplash.com/photo-1626806787461-102c1a78d090?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    "https://images.unsplash.com/photo-1626806787461-102c1a78d090?w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=800&auto=format&fit=crop"
   ];
 
   return (
@@ -51,14 +51,19 @@ const Login = () => {
         {/* Company Logo */}
         <div className="mb-8">
           <img 
-            src="https://via.placeholder.com/240x120?text=Laverie+Moderne+Forndi" 
+            src="https://placehold.co/240x120?text=Laverie+Moderne+Forndi" 
             alt="Laverie Moderne Forndi" 
             className="h-24 object-contain"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.onerror = null;
+              target.src = "https://placehold.co/240x120?text=Laverie+Moderne+Forndi";
+            }}
           />
         </div>
 
         {/* Carousel with washing machine images */}
-        <div className="w-full max-w-md mb-8">
+        <div className="w-full max-w-md mb-8 relative">
           <Carousel className="w-full">
             <CarouselContent>
               {washingMachineImages.map((img, index) => (
@@ -68,11 +73,18 @@ const Login = () => {
                       src={img} 
                       alt={`Machine à laver ${index + 1}`} 
                       className="w-full h-full object-cover rounded-lg shadow-md"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = "https://placehold.co/400x200?text=Image+non+disponible";
+                      }}
                     />
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
+            <CarouselPrevious className="left-0" />
+            <CarouselNext className="right-0" />
           </Carousel>
         </div>
 

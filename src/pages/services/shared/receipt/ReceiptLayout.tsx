@@ -14,6 +14,11 @@ const ReceiptLayout: React.FC<ReceiptLayoutProps> = ({ children, onClose }) => {
     // Ajouter une classe au body pour les styles d'impression
     document.body.classList.add("printing-receipt");
     
+    // Mettre à jour la mise en page après le rendu
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+    
     return () => {
       // Nettoyer en enlevant la classe quand le composant est démonté
       document.body.classList.remove("printing-receipt");
