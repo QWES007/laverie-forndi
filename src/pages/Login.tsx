@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,13 +10,17 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
+const formatPhoneNumber = (phoneNumber: string) => {
+  if (phoneNumber.length <= 4) return phoneNumber;
+  return phoneNumber.slice(0, -4) + '****';
+};
+
 const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
 
-  // Redirect if already logged in using useEffect
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
@@ -37,7 +40,11 @@ const Login = () => {
     }
   };
 
-  // Washing machine images for the carousel - updated with new images
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.replace(/\D/g, '');
+    setPhoneNumber(inputValue);
+  };
+
   const washingMachineImages = [
     "/lovable-uploads/ac221dbd-5f09-4843-8e79-39caa60fc210.png",
     "/lovable-uploads/56d56d7c-353e-4e2f-a665-e8a7ccda8e44.png",
@@ -47,7 +54,6 @@ const Login = () => {
     "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=800&auto=format&fit=crop"
   ];
 
-  // Si l'utilisateur est déjà authentifié, on ne rend pas le composant
   if (isAuthenticated) {
     return null;
   }
@@ -55,7 +61,6 @@ const Login = () => {
   return (
     <Layout>
       <div className="container mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-16rem)] py-12">
-        {/* Company Logo */}
         <div className="mb-8">
           <img 
             src="/lovable-uploads/f6582c52-16f3-406c-87af-eae3b595a041.png" 
@@ -69,7 +74,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Carousel with washing machine images */}
         <div className="w-full max-w-md mb-8 relative">
           <Carousel className="w-full">
             <CarouselContent>
@@ -118,8 +122,10 @@ const Login = () => {
                       id="phone" 
                       placeholder="0709177296" 
                       className="pl-10" 
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      value={formatPhoneNumber(phoneNumber)}
+                      onChange={handlePhoneNumberChange}
+                      type="tel"
+                      maxLength={10}
                     />
                   </div>
                 </div>
