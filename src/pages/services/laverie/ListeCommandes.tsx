@@ -9,7 +9,8 @@ import {
   TabsList, 
   TabsTrigger 
 } from "@/components/ui/tabs";
-import { Package, ArrowLeft } from "lucide-react";
+import { Package, ArrowLeft, Calendar, User, Phone } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const ListeCommandes = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,11 +17,12 @@ const Login = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
 
-  // Redirect if already logged in
-  if (isAuthenticated) {
-    navigate('/');
-    return null;
-  }
+  // Redirect if already logged in using useEffect
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +46,11 @@ const Login = () => {
     "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=800&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=800&auto=format&fit=crop"
   ];
+
+  // Si l'utilisateur est déjà authentifié, on ne rend pas le composant
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <Layout>
