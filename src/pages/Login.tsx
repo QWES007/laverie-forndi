@@ -119,7 +119,7 @@ const Login = () => {
                     <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <Input 
                       id="phone" 
-                      placeholder="0709177296" 
+                      placeholder="" 
                       className="pl-10" 
                       value={phoneNumber}
                       onChange={handlePhoneNumberChange}
