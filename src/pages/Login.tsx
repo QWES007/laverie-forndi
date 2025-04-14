@@ -11,12 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const formatPhoneNumber = (phoneNumber: string) => {
-  if (phoneNumber.length <= 4) return phoneNumber;
-  
-  const visiblePrefix = phoneNumber.slice(0, 2);
-  const maskedSuffix = '*'.repeat(phoneNumber.length - 2);
-  
-  return visiblePrefix + maskedSuffix;
+  return phoneNumber;
 };
 
 const Login = () => {
@@ -126,7 +121,7 @@ const Login = () => {
                       id="phone" 
                       placeholder="0709177296" 
                       className="pl-10" 
-                      value={formatPhoneNumber(phoneNumber)}
+                      value={phoneNumber}
                       onChange={handlePhoneNumberChange}
                       type="tel"
                       maxLength={10}
