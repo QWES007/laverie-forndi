@@ -12,7 +12,11 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 const formatPhoneNumber = (phoneNumber: string) => {
   if (phoneNumber.length <= 4) return phoneNumber;
-  return phoneNumber.slice(0, -4) + '****';
+  
+  const visiblePrefix = phoneNumber.slice(0, 2);
+  const maskedSuffix = '*'.repeat(phoneNumber.length - 2);
+  
+  return visiblePrefix + maskedSuffix;
 };
 
 const Login = () => {
