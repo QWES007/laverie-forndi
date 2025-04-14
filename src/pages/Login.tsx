@@ -38,7 +38,7 @@ const Login = () => {
     }
   };
 
-  // Washing machine images for the carousel - updating with more reliable image URLs
+  // Washing machine images for the carousel
   const washingMachineImages = [
     "https://images.unsplash.com/photo-1626806787461-102c1a78d090?w=800&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=800&auto=format&fit=crop",
@@ -51,9 +51,9 @@ const Login = () => {
         {/* Company Logo */}
         <div className="mb-8">
           <img 
-            src="https://placehold.co/240x120?text=Laverie+Moderne+Forndi" 
+            src="/lovable-uploads/f6582c52-16f3-406c-87af-eae3b595a041.png" 
             alt="Laverie Moderne Forndi" 
-            className="h-24 object-contain"
+            className="h-32 object-contain"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.onerror = null;
