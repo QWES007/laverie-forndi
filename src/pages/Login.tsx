@@ -38,8 +38,11 @@ const Login = () => {
     }
   };
 
-  // Washing machine images for the carousel
+  // Washing machine images for the carousel - updated with new images
   const washingMachineImages = [
+    "/lovable-uploads/ac221dbd-5f09-4843-8e79-39caa60fc210.png",
+    "/lovable-uploads/56d56d7c-353e-4e2f-a665-e8a7ccda8e44.png",
+    "/lovable-uploads/632c6802-7abe-4a16-a47f-e91e41185952.png",
     "https://images.unsplash.com/photo-1626806787461-102c1a78d090?w=800&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=800&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=800&auto=format&fit=crop"
