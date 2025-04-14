@@ -10,7 +10,7 @@ import { UserForm } from "./UserFormSchema";
 
 // Sample initial users
 const initialUsers: User[] = [
-  { id: "1", name: "Admin Système", phone: "0600000000", role: "admin" },
+  { id: "1", name: "Admin Système", phone: "0709177296", role: "admin" },
   { id: "2", name: "Jean Réceptionniste", phone: "0611111111", role: "receptionniste" },
   { id: "3", name: "Marie Gérante", phone: "0622222222", role: "gerant" },
 ];
@@ -21,28 +21,38 @@ const UserManagement = () => {
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
   const onSubmit = (data: UserForm) => {
-    if (editingUser?.id) {
-      // Update existing user - ensure all required properties are present
-      const updatedUser: User = {
-        id: editingUser.id,
-        name: data.name,
-        phone: data.phone,
-        role: data.role
-      };
-      setUsers(users.map(user => (user.id === editingUser.id ? updatedUser : user)));
-      toast.success("Utilisateur mis à jour avec succès");
-    } else {
-      // Add new user - ensure all required properties are present
-      const newUser: User = {
-        id: Math.random().toString(36).substring(2, 9),
-        name: data.name,
-        phone: data.phone,
-        role: data.role
-      };
-      setUsers([...users, newUser]);
-      toast.success("Nouvel utilisateur ajouté avec succès");
+    try {
+      if (editingUser?.id) {
+        // Update existing user - ensure all required properties are present
+        const updatedUser: User = {
+          id: editingUser.id,
+          name: data.name,
+          phone: data.phone,
+          role: data.role
+        };
+        setUsers(users.map(user => (user.id === editingUser.id ? updatedUser : user)));
+        toast.success("Utilisateur mis à jour avec succès");
+      } else {
+        // Add new user - ensure all required properties are present
+        const newUser: User = {
+          id: Math.random().toString(36).substring(2, 9),
+          name: data.name,
+          phone: data.phone,
+          role: data.role
+        };
+        setUsers([...users, newUser]);
+        toast.success("Nouvel utilisateur ajouté avec succès");
+      }
+      
+      // Fermer la sheet après la soumission
+      setIsSheetOpen(false);
+      
+      // Réinitialiser l'utilisateur en cours d'édition
+      setEditingUser(null);
+    } catch (error) {
+      console.error("Erreur lors de la soumission:", error);
+      toast.error("Une erreur est survenue. Veuillez réessayer.");
     }
-    setIsSheetOpen(false);
   };
 
   const openAddUserForm = () => {
@@ -56,7 +66,7 @@ const UserManagement = () => {
   };
 
   const deleteUser = (id: string) => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
       setUsers(users.filter(user => user.id !== id));
       toast.success("Utilisateur supprimé avec succès");
     }
@@ -78,12 +88,15 @@ const UserManagement = () => {
         onDelete={deleteUser} 
       />
 
-      <UserFormSheet
-        isOpen={isSheetOpen}
-        onOpenChange={setIsSheetOpen}
-        onSubmit={onSubmit}
-        editingUser={editingUser}
-      />
+      {/* Conditionnellement rendre la Sheet */}
+      {isSheetOpen && (
+        <UserFormSheet
+          isOpen={isSheetOpen}
+          onOpenChange={setIsSheetOpen}
+          onSubmit={onSubmit}
+          editingUser={editingUser}
+        />
+      )}
     </div>
   );
 };

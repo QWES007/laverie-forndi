@@ -20,14 +20,24 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
     defaultValues: {
       name: editingUser?.name || "",
       phone: editingUser?.phone || "",
-      password: "",
+      password: "", // Vide par défaut, même en édition
       role: editingUser?.role || "receptionniste",
     },
+    // Permettre une validation conditionnelle du mot de passe
+    context: { isEditing: !!editingUser }
   });
+
+  const handleSubmit = (data: UserForm) => {
+    try {
+      onSubmit(data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6 py-6">
         <FormField
           control={form.control}
           name="name"
