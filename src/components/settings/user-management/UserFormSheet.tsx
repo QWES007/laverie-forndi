@@ -13,18 +13,17 @@ interface UserFormSheetProps {
 }
 
 const UserFormSheet = ({ isOpen, onOpenChange, onSubmit, editingUser }: UserFormSheetProps) => {
-  // Assurez-vous que le dialogue se ferme correctement avant de nettoyer
+  // Nettoyer correctement lors du démontage du composant
   useEffect(() => {
     return () => {
-      if (isOpen) {
-        onOpenChange(false);
-      }
+      // Ne pas essayer de fermer la feuille si le composant est démonté
+      // car cela pourrait déclencher des opérations sur des nœuds DOM qui n'existent plus
     };
   }, []);
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="sm:max-w-md">
+      <SheetContent className="sm:max-w-md overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{editingUser ? "Modifier l'utilisateur" : "Ajouter un utilisateur"}</SheetTitle>
         </SheetHeader>

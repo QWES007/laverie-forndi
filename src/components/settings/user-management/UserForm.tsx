@@ -7,7 +7,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { userFormSchema, UserForm } from "./UserFormSchema";
+import { userFormSchema, UserForm, roleNames } from "./UserFormSchema";
+import { useEffect } from "react";
 
 interface UserFormProps {
   onSubmit: (data: UserForm) => void;
@@ -27,9 +28,29 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
     context: { isEditing: !!editingUser }
   });
 
+  // Mettre à jour les valeurs de formulaire lorsque editingUser change
+  useEffect(() => {
+    if (editingUser) {
+      form.reset({
+        name: editingUser.name,
+        phone: editingUser.phone,
+        password: "",
+        role: editingUser.role,
+      });
+    } else {
+      form.reset({
+        name: "",
+        phone: "",
+        password: "",
+        role: "receptionniste",
+      });
+    }
+  }, [editingUser, form]);
+
   const handleSubmit = (data: UserForm) => {
     try {
       onSubmit(data);
+      form.reset();
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -91,10 +112,13 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
               <Select 
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
+                value={field.value}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner un rôle" />
+                    <SelectValue placeholder="Sélectionner un rôle">
+                      {field.value ? roleNames[field.value as keyof typeof roleNames] : "Sélectionner un rôle"}
+                    </SelectValue>
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -108,7 +132,7 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
           )}
         />
 
-        <SheetFooter>
+        <SheetFooter className="mt-4">
           <SheetClose asChild>
             <Button type="button" variant="outline">Annuler</Button>
           </SheetClose>

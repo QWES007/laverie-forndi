@@ -45,10 +45,7 @@ const UserManagement = () => {
       }
       
       // Fermer la sheet après la soumission
-      setIsSheetOpen(false);
-      
-      // Réinitialiser l'utilisateur en cours d'édition
-      setEditingUser(null);
+      handleCloseSheet();
     } catch (error) {
       console.error("Erreur lors de la soumission:", error);
       toast.error("Une erreur est survenue. Veuillez réessayer.");
@@ -63,6 +60,14 @@ const UserManagement = () => {
   const openEditUserForm = (user: User) => {
     setEditingUser(user);
     setIsSheetOpen(true);
+  };
+
+  const handleCloseSheet = () => {
+    setIsSheetOpen(false);
+    // Attendre que l'animation de fermeture soit terminée avant de réinitialiser l'état
+    setTimeout(() => {
+      setEditingUser(null);
+    }, 300); // Généralement, les animations durent environ 300ms
   };
 
   const deleteUser = (id: string) => {
@@ -92,7 +97,10 @@ const UserManagement = () => {
       {isSheetOpen && (
         <UserFormSheet
           isOpen={isSheetOpen}
-          onOpenChange={setIsSheetOpen}
+          onOpenChange={(open) => {
+            if (!open) handleCloseSheet();
+            else setIsSheetOpen(true);
+          }}
           onSubmit={onSubmit}
           editingUser={editingUser}
         />
