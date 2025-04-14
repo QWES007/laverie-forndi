@@ -37,11 +37,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  // Mock user data (in a real app, this would come from an API)
+  // Default admin account (only account for initial setup)
   const mockUsers = [
-    { id: "1", name: "Admin Système", phone: "0600000000", role: "admin", password: "admin123" },
-    { id: "2", name: "Jean Réceptionniste", phone: "0611111111", role: "receptionniste", password: "jean123" },
-    { id: "3", name: "Marie Gérante", phone: "0622222222", role: "gerant", password: "marie123" },
+    { id: "1", name: "Admin Système", phone: "0709177296", role: "admin", password: "qwes080184" },
   ] as const;
 
   // Check if there's a user in localStorage when the component mounts
