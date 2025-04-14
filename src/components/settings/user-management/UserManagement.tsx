@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { User } from "@/contexts/AuthContext";
 import { Plus } from "lucide-react";
@@ -8,17 +8,34 @@ import UserTable from "./UserTable";
 import UserFormSheet from "./UserFormSheet";
 import { UserForm } from "./UserFormSchema";
 
-// Sample initial users
-const initialUsers: User[] = [
+// Utilisateurs initiaux, utilisés seulement si aucun utilisateur n'existe dans le localStorage
+const defaultUsers: User[] = [
   { id: "1", name: "Admin Système", phone: "0709177296", role: "admin" },
-  { id: "2", name: "Jean Réceptionniste", phone: "0611111111", role: "receptionniste" },
-  { id: "3", name: "Marie Gérante", phone: "0622222222", role: "gerant" },
 ];
 
 const UserManagement = () => {
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+
+  // Charger les utilisateurs depuis le localStorage au chargement du composant
+  useEffect(() => {
+    const storedUsers = localStorage.getItem('appUsers');
+    if (storedUsers) {
+      setUsers(JSON.parse(storedUsers));
+    } else {
+      // Si aucun utilisateur n'est stocké, utiliser uniquement l'utilisateur admin par défaut
+      setUsers([defaultUsers[0]]);
+      localStorage.setItem('appUsers', JSON.stringify([defaultUsers[0]]));
+    }
+  }, []);
+
+  // Mettre à jour le localStorage lorsque les utilisateurs changent
+  useEffect(() => {
+    if (users.length > 0) {
+      localStorage.setItem('appUsers', JSON.stringify(users));
+    }
+  }, [users]);
 
   const onSubmit = (data: UserForm) => {
     try {
@@ -71,8 +88,19 @@ const UserManagement = () => {
   };
 
   const deleteUser = (id: string) => {
+    // Empêcher la suppression du dernier administrateur
+    const isLastAdmin = users.filter(user => user.role === "admin").length === 1 && 
+                        users.find(user => user.id === id)?.role === "admin";
+    
+    if (isLastAdmin) {
+      toast.error("Impossible de supprimer le dernier administrateur");
+      return;
+    }
+    
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
-      setUsers(users.filter(user => user.id !== id));
+      const updatedUsers = users.filter(user => user.id !== id);
+      setUsers(updatedUsers);
+      localStorage.setItem('appUsers', JSON.stringify(updatedUsers));
       toast.success("Utilisateur supprimé avec succès");
     }
   };

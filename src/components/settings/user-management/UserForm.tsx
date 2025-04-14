@@ -49,6 +49,14 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
 
   const handleSubmit = (data: UserForm) => {
     try {
+      // Ajout du mot de passe au localStorage pour l'authentification
+      if (data.password) {
+        const storedPwd = localStorage.getItem('adminPwd') || '{}';
+        const passwords = JSON.parse(storedPwd);
+        passwords[data.phone] = data.password;
+        localStorage.setItem('adminPwd', JSON.stringify(passwords));
+      }
+      
       onSubmit(data);
       form.reset();
     } catch (error) {

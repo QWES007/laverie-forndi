@@ -38,9 +38,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   // Default admin account (only account for initial setup)
-  const mockUsers = [
-    { id: "1", name: "Admin Système", phone: "0709177296", role: "admin", password: "qwes080184" },
-  ] as const;
+  const defaultAdmin = {
+    id: "1", 
+    name: "Admin Système", 
+    phone: "0709177296", 
+    role: "admin" as const, 
+    password: "qwes080184"
+  };
+
+  // Initialize appUsers in localStorage if it doesn't exist
+  useEffect(() => {
+    const storedUsers = localStorage.getItem('appUsers');
+    if (!storedUsers) {
+      localStorage.setItem('appUsers', JSON.stringify([
+        { id: defaultAdmin.id, name: defaultAdmin.name, phone: defaultAdmin.phone, role: defaultAdmin.role }
+      ]));
+    }
+    
+    // Also store the admin password separately for security
+    const storedPwd = localStorage.getItem('adminPwd');
+    if (!storedPwd) {
+      localStorage.setItem('adminPwd', JSON.stringify({
+        [defaultAdmin.phone]: defaultAdmin.password
+      }));
+    }
+  }, []);
 
   // Check if there's a user in localStorage when the component mounts
   useEffect(() => {
@@ -53,14 +75,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Login function
   const login = async (phone: string, password: string): Promise<boolean> => {
-    const user = mockUsers.find(user => user.phone === phone && user.password === password);
+    // Get user from the users list
+    const storedUsers = localStorage.getItem('appUsers');
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+    const userToLogin = users.find((u: User) => u.phone === phone);
     
-    if (user) {
+    // Get password from storage
+    const storedPwd = localStorage.getItem('adminPwd');
+    const passwords = storedPwd ? JSON.parse(storedPwd) : {};
+    
+    // For default admin or any user whose password matches
+    if (userToLogin && passwords[phone] === password) {
       const userData: User = {
-        id: user.id,
-        name: user.name,
-        role: user.role,
-        phone: user.phone
+        id: userToLogin.id,
+        name: userToLogin.name,
+        role: userToLogin.role,
+        phone: userToLogin.phone
       };
       
       localStorage.setItem('currentUser', JSON.stringify(userData));
