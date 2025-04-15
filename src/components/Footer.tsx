@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -59,8 +60,8 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contactez-nous</h3>
             <address className="text-laundry-100 text-sm not-italic">
-              <p>Email: gestionnaire@laveriemoderneforndi.com</p>
-              <p>Téléphone: +225 07 09 177 296 / 01 03 788 294</p>
+              <p>Email: solutionsmarketcosmetic@gmail.com</p>
+              <p>Téléphone: +225 0788029718 / 0747070799</p>
             </address>
             <div className="mt-4 flex space-x-4">
               <a href="#" className="text-laundry-100 hover:text-white transition-colors">
