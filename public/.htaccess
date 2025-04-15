@@ -36,4 +36,8 @@
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-XSS-Protection "1; mode=block"
   Header always set X-Frame-Options "SAMEORIGIN"
+  # Correction pour les assets (Javascript, CSS)
+  <FilesMatch "\.(js|css|html)$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
 </IfModule>
