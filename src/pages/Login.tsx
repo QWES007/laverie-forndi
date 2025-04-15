@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -157,9 +156,6 @@ const Login = () => {
             <CardFooter className="flex flex-col space-y-2">
               <div className="text-sm text-gray-500 text-center">
                 Cette application est réservée au personnel de LAVERIE MODERNE FORNDI.
-              </div>
-              <div className="text-xs text-gray-400 text-center">
-                Numéro de téléphone par défaut: 0709177296 | Mot de passe: qwes080184
               </div>
             </CardFooter>
           </Card>
