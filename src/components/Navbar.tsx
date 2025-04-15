@@ -53,11 +53,7 @@ const Navbar = () => {
                   Déconnexion
                 </Button>
               </>
-            ) : (
-              <Button variant="outline" className="mr-3" asChild>
-                <Link to="/login">Se connecter</Link>
-              </Button>
-            )}
+            ) : null}
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button onClick={toggleMenu} className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-laundry-500">
@@ -97,14 +93,11 @@ const Navbar = () => {
                   Déconnexion
                 </Button>
               </>
-            ) : (
-              <Button variant="outline" className="w-full justify-center" asChild>
-                <Link to="/login">Se connecter</Link>
-              </Button>
-            )}
+            ) : null}
           </div>
         </div>}
     </nav>;
 };
 
 export default Navbar;
+
