@@ -1,6 +1,15 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  User as FirebaseUser
+} from 'firebase/auth';
+import { auth } from '../integrations/firebase/client';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { firestore } from '../integrations/firebase/client';
 
 // Define the User interface
 export interface User {
@@ -64,16 +73,47 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Check if there's a user in localStorage when the component mounts
+  // Set up Firebase authentication listener
   useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
-    }
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // Check if user exists in Firestore
+        try {
+          const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
+          
+          if (userDoc.exists()) {
+            const userData = userDoc.data() as User;
+            setUser({
+              id: firebaseUser.uid,
+              name: userData.name,
+              role: userData.role,
+              phone: userData.phone
+            });
+            setIsAuthenticated(true);
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+          } else {
+            // User not found in Firestore database
+            setUser(null);
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      } else {
+        // No user is logged in
+        setUser(null);
+        setIsAuthenticated(false);
+        localStorage.removeItem('currentUser');
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  // Login function
+  // Login function - for now, we'll continue to use localStorage
+  // In a real app, you'd convert this to use Firebase authentication
   const login = async (phone: string, password: string): Promise<boolean> => {
     // Get user from the users list
     const storedUsers = localStorage.getItem('appUsers');
@@ -86,17 +126,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     // For default admin or any user whose password matches
     if (userToLogin && passwords[phone] === password) {
-      const userData: User = {
-        id: userToLogin.id,
-        name: userToLogin.name,
-        role: userToLogin.role,
-        phone: userToLogin.phone
-      };
-      
-      localStorage.setItem('currentUser', JSON.stringify(userData));
-      setUser(userData);
-      setIsAuthenticated(true);
-      return true;
+      try {
+        // Create a Firebase email from the phone number for authentication
+        const email = `${phone}@laverie-moderne.com`;
+        
+        // Try to sign in with Firebase
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+        } catch (error: any) {
+          // If user doesn't exist in Firebase, we'll just use local auth for now
+          console.warn("Firebase auth failed, using local auth:", error.message);
+        }
+        
+        const userData: User = {
+          id: userToLogin.id,
+          name: userToLogin.name,
+          role: userToLogin.role,
+          phone: userToLogin.phone
+        };
+        
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        setUser(userData);
+        setIsAuthenticated(true);
+        return true;
+      } catch (error) {
+        console.error("Login error:", error);
+        return false;
+      }
     }
     
     return false;
@@ -104,10 +160,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Logout function
   const logout = () => {
-    localStorage.removeItem('currentUser');
-    setUser(null);
-    setIsAuthenticated(false);
-    navigate('/login');
+    signOut(auth).then(() => {
+      localStorage.removeItem('currentUser');
+      setUser(null);
+      setIsAuthenticated(false);
+      navigate('/login');
+    }).catch((error) => {
+      console.error("Logout error:", error);
+    });
   };
 
   // Check if user is admin

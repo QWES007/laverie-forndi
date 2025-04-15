@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,13 +30,18 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const success = await login(phoneNumber, password);
-    
-    if (success) {
-      toast.success("Connexion réussie");
-      navigate('/');
-    } else {
-      toast.error("Numéro de téléphone ou mot de passe incorrect");
+    try {
+      const success = await login(phoneNumber, password);
+      
+      if (success) {
+        toast.success("Connexion réussie");
+        navigate('/');
+      } else {
+        toast.error("Numéro de téléphone ou mot de passe incorrect");
+      }
+    } catch (error) {
+      console.error("Erreur de connexion:", error);
+      toast.error("Une erreur s'est produite lors de la connexion");
     }
   };
 
