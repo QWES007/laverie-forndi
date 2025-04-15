@@ -3,7 +3,7 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-// Mettez à jour ces valeurs avec les informations de votre nouvelle base de données
+// Configuration pour la connexion à la base de données Hostinger
 const SUPABASE_URL = "https://syfphnbfwisnimeacvnp.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5ZnBobmJmd2lzbmltZWFjdm5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwMzMxNDYsImV4cCI6MjA1NzYwOTE0Nn0.d617CTnEUNgLRwwq47TnLM2GjksrYgD71YFgz20TU9w";
 
@@ -11,3 +11,7 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+// Note importante : Pour connecter entièrement votre application à Hostinger,
+// vous devrez configurer la redirection de Supabase vers votre base de données Hostinger
+// dans le tableau de bord de Supabase sous Database > Database Settings > Connection Pooling

@@ -1,2 +1,6 @@
 
 project_id = "syfphnbfwisnimeacvnp"
+
+# Configuration pour la connexion à Hostinger
+# Ces informations sont utilisées par l'infrastructure Supabase
+# et ne doivent pas être modifiées manuellement sans accès au tableau de bord
