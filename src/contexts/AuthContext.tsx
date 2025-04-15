@@ -1,6 +1,9 @@
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { Session } from '@supabase/supabase-js';
+import { toast } from 'sonner';
 
 // Define the User interface
 export interface User {
@@ -35,6 +38,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
   const navigate = useNavigate();
 
   // Default admin account (only account for initial setup)
@@ -46,8 +50,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: "qwes080184"
   };
 
-  // Initialize appUsers in localStorage if it doesn't exist
-  useState(() => {
+  useEffect(() => {
+    // Initialize appUsers in localStorage if it doesn't exist
     const storedUsers = localStorage.getItem('appUsers');
     if (!storedUsers) {
       localStorage.setItem('appUsers', JSON.stringify([
@@ -70,9 +74,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(userData);
       setIsAuthenticated(true);
     }
-  });
 
-  // Login function using localStorage
+    // Set up Supabase auth listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        if (session) {
+          // For future Supabase auth integration
+          console.log("Supabase auth session detected", session);
+        }
+      }
+    );
+
+    // Cleanup
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  // Login function using localStorage with future Supabase integration
   const login = async (phone: string, password: string): Promise<boolean> => {
     // Get user from the users list
     const storedUsers = localStorage.getItem('appUsers');
@@ -96,6 +116,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('currentUser', JSON.stringify(userData));
         setUser(userData);
         setIsAuthenticated(true);
+
+        // For future Supabase integration
+        // Uncomment when ready to use Supabase auth
+        /*
+        try {
+          // This would be for email-based login
+          // For phone-based, you would need to implement phone auth flow
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: `${phone}@example.com`, // Placeholder for phone auth
+            password: password
+          });
+          
+          if (error) throw error;
+          console.log("Supabase auth successful", data);
+        } catch (supabaseError) {
+          console.error("Supabase auth error:", supabaseError);
+          // Continue with localStorage auth as fallback
+        }
+        */
+        
         return true;
       } catch (error) {
         console.error("Login error:", error);
@@ -111,6 +151,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('currentUser');
     setUser(null);
     setIsAuthenticated(false);
+    
+    // For future Supabase integration
+    supabase.auth.signOut()
+      .catch(error => console.error("Error signing out with Supabase:", error));
+    
     navigate('/login');
   };
 

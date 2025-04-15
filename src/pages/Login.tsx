@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,13 +11,10 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
-const formatPhoneNumber = (phoneNumber: string) => {
-  return phoneNumber;
-};
-
 const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
 
@@ -28,6 +26,7 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
     try {
       const success = await login(phoneNumber, password);
@@ -41,6 +40,8 @@ const Login = () => {
     } catch (error) {
       console.error("Erreur de connexion:", error);
       toast.error("Une erreur s'est produite lors de la connexion");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -130,6 +131,7 @@ const Login = () => {
                       onChange={handlePhoneNumberChange}
                       type="tel"
                       maxLength={10}
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -143,15 +145,21 @@ const Login = () => {
                       className="pl-10"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
-                <Button type="submit" className="w-full">Se connecter</Button>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Connexion en cours..." : "Se connecter"}
+                </Button>
               </form>
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
               <div className="text-sm text-gray-500 text-center">
                 Cette application est réservée au personnel de LAVERIE MODERNE FORNDI.
+              </div>
+              <div className="text-xs text-gray-400 text-center">
+                Numéro de téléphone par défaut: 0709177296 | Mot de passe: qwes080184
               </div>
             </CardFooter>
           </Card>
