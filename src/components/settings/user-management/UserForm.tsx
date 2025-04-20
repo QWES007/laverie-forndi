@@ -7,8 +7,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { userFormSchema, UserForm, roleNames } from "./UserFormSchema";
-import { useEffect } from "react";
+import { userFormSchema, UserForm } from "./UserFormSchema";
 
 interface UserFormProps {
   onSubmit: (data: UserForm) => void;
@@ -21,52 +20,14 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
     defaultValues: {
       name: editingUser?.name || "",
       phone: editingUser?.phone || "",
-      password: "", // Vide par défaut, même en édition
+      password: "",
       role: editingUser?.role || "receptionniste",
     },
-    // Permettre une validation conditionnelle du mot de passe
-    context: { isEditing: !!editingUser }
   });
-
-  // Mettre à jour les valeurs de formulaire lorsque editingUser change
-  useEffect(() => {
-    if (editingUser) {
-      form.reset({
-        name: editingUser.name,
-        phone: editingUser.phone,
-        password: "",
-        role: editingUser.role,
-      });
-    } else {
-      form.reset({
-        name: "",
-        phone: "",
-        password: "",
-        role: "receptionniste",
-      });
-    }
-  }, [editingUser, form]);
-
-  const handleSubmit = (data: UserForm) => {
-    try {
-      // Ajout du mot de passe au localStorage pour l'authentification
-      if (data.password) {
-        const storedPwd = localStorage.getItem('adminPwd') || '{}';
-        const passwords = JSON.parse(storedPwd);
-        passwords[data.phone] = data.password;
-        localStorage.setItem('adminPwd', JSON.stringify(passwords));
-      }
-      
-      onSubmit(data);
-      form.reset();
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6 py-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-6">
         <FormField
           control={form.control}
           name="name"
@@ -120,13 +81,10 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
               <Select 
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
-                value={field.value}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner un rôle">
-                      {field.value ? roleNames[field.value as keyof typeof roleNames] : "Sélectionner un rôle"}
-                    </SelectValue>
+                    <SelectValue placeholder="Sélectionner un rôle" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -140,7 +98,7 @@ const UserFormComponent = ({ onSubmit, editingUser }: UserFormProps) => {
           )}
         />
 
-        <SheetFooter className="mt-4">
+        <SheetFooter>
           <SheetClose asChild>
             <Button type="button" variant="outline">Annuler</Button>
           </SheetClose>
