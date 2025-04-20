@@ -1,9 +1,6 @@
-
 import { Link } from "react-router-dom";
-
 const Footer = () => {
-  return (
-    <footer className="bg-laundry-800 text-white">
+  return <footer className="bg-laundry-800 text-white">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -60,7 +57,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contactez-nous</h3>
             <address className="text-laundry-100 text-sm not-italic">
-              <p>Email: contact@laverieforndi.com</p>
+              <p>Email: gestionnaire@laveriemoderneforndi.com</p>
               <p>Téléphone: +33 1 23 45 67 89</p>
             </address>
             <div className="mt-4 flex space-x-4">
@@ -80,8 +77,6 @@ const Footer = () => {
           <p>&copy; {new Date().getFullYear()} LAVERIE MODERNE FORNDI. Tous droits réservés.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
