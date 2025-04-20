@@ -55,7 +55,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contactez-nous</h3>
+            <h3 className="text-lg font-semibold mb-4">Téléphone: +225 01 03 788 294</h3>
             <address className="text-laundry-100 text-sm not-italic">
               <p>Email: gestionnaire@laveriemoderneforndi.com</p>
               <p>Téléphone: +33 1 23 45 67 89</p>
