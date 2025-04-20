@@ -2,7 +2,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Define the User interface
 export interface User {
   id: string;
   name: string;
@@ -10,7 +9,6 @@ export interface User {
   role: "admin" | "receptionniste" | "gerant";
 }
 
-// Define the context interface
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
@@ -19,7 +17,6 @@ interface AuthContextType {
   isAdmin: () => boolean;
 }
 
-// Create the context with a default value
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
@@ -28,23 +25,22 @@ const AuthContext = createContext<AuthContextType>({
   isAdmin: () => false,
 });
 
-// Hook to use the auth context
 export const useAuth = () => useContext(AuthContext);
 
-// Provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  // Mock user data (in a real app, this would come from an API)
-  const mockUsers = [
-    { id: "1", name: "Admin Système", phone: "0600000000", role: "admin", password: "admin123" },
-    { id: "2", name: "Jean Réceptionniste", phone: "0611111111", role: "receptionniste", password: "jean123" },
-    { id: "3", name: "Marie Gérante", phone: "0622222222", role: "gerant", password: "marie123" },
-  ] as const;
+  // Only admin credentials
+  const adminUser = { 
+    id: "1", 
+    name: "Administrateur", 
+    phone: "0709177296", 
+    role: "admin", 
+    password: "qwes080184" 
+  } as const;
 
-  // Check if there's a user in localStorage when the component mounts
   useEffect(() => {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
@@ -53,16 +49,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Login function
   const login = async (phone: string, password: string): Promise<boolean> => {
-    const user = mockUsers.find(user => user.phone === phone && user.password === password);
-    
-    if (user) {
+    if (phone === adminUser.phone && password === adminUser.password) {
       const userData: User = {
-        id: user.id,
-        name: user.name,
-        role: user.role,
-        phone: user.phone
+        id: adminUser.id,
+        name: adminUser.name,
+        role: adminUser.role,
+        phone: adminUser.phone
       };
       
       localStorage.setItem('currentUser', JSON.stringify(userData));
@@ -74,7 +67,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return false;
   };
 
-  // Logout function
   const logout = () => {
     localStorage.removeItem('currentUser');
     setUser(null);
@@ -82,7 +74,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     navigate('/login');
   };
 
-  // Check if user is admin
   const isAdmin = () => {
     return user?.role === 'admin';
   };
